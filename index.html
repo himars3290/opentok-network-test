@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script type="text/javascript" src="https://static.opentok.com/v2/js/opentok.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="assets/styles.css"  rel="stylesheet">
+    <link href="assets/precallResults.css"  rel="stylesheet">
+    <link href="assets/bootstrap.min.css"  rel="stylesheet">
+  </head>
+  <body>
+    <h1>OpenTok <small>Network test</small></h1>
+    <div id="precall" class="prettyBox">
+      <div class="options">
+        Options:
+        <span>
+          <input id="checkBox" type="checkbox"> <label>Audio-only</label>
+        </span>
+        <span>
+          Maximum duration:
+          <select>
+            <option>30</option>
+            <option>25</option>
+            <option>20</option>
+            <option>15</option>
+            <option>10</option>
+            <option>5</option>
+          </select>
+        </span>
+      </div>
+      <button>Start test</button>
+    </div>
+
+    <div id="connectivity_status_container" class="prettyBox">
+      <h2>Testing connectivity</h2>
+      <p>Test in progress.</p>
+      <img src="assets/spinner.gif">
+    </div>
+    <div id="quality_status_container" class="prettyBox">
+      <div id="quality_header">
+        <h2>Testing quality</h2>
+        <p>Test in progress.</p>
+        <img src="assets/spinner.gif">
+        <button id="stop_test">Stop test</button>
+      </div>
+      <div>
+        <div id="audio">
+          <h3>Audio</h3>
+          <div>
+            <div class="results">
+              <p>Supported:
+                <span id="audio-supported"></span>
+              </p>
+              <p>Quality:
+                <span id="audio-mos"></span>
+              </p>
+              <p>Bitrate:
+                <span id="audio-bitrate"></span>
+              </p>
+              <p>Packet loss ratio:
+                <span id="audio-plr"></span>
+              </p>
+            </div>
+            <div id="audioGraph" class="graph"></div>
+          </div>
+        </div>
+        <div id="video">
+          <h3>Video</h3>
+          <div>
+            <div class="results">
+              <p>Supported:
+                <span id="video-supported"></span>
+              <p id="video-unsupported-reason">Reason:
+                <span></span>
+              </p>
+              <p>Quality:
+                <span id="video-mos"></span>
+              </p>
+              <p>Bitrate:
+                <span id="video-bitrate"></span>
+              </p>
+              <p>Packet loss ratio:
+                <span id="video-plr"></span>
+              </p>
+              <p>Recommended resolution:
+                <span id="video-recommendedResolution"></span>
+              </p>
+              <p>Recommended frame rate:
+                <span id="video-recommendedFrameRate"></span>
+              </p>
+            </div>
+            <div id="videoGraph" class="graph"></div>
+          </div>
+        </div>
+    </div>
+    </div>
+    <div id="hardware_software_setup" style="display: none">
+      <div class="row margin_top_30 hardware_software_setup">
+        <div class="col-md-3"></div>
+        <div class="col-md-6 precall_panel precall_panel_header precall_panel_header_error" id="precall_setup">
+          <div class="col-md-12">Hardware &amp; Software Setup</div>
+        </div>
+        <div class="col-md-3"></div>
+      </div>
+      <div class="row" id="video_check_row">
+        <div class="col-md-3"></div>
+        <div class="col-md-6 precall_panel precall_panel_error" id="video_check">
+          <div class="col-md-3" id="camera_preview"></div>
+          <div class="col-md-9 section_details">
+            <div class="section_name section_name_success section_name_error">Video - Device issue</div>
+            <text class="subtext">A camera was found, but it is not sending video data. Please try a new camera.</text>
+            <div class="padding_top10">
+              <select id="cam_dropdown"><option>Camera: 17d01c842ade26abe4ce5f83b6e33b19d783d6a86d725d7d9cf3bbc754a9a28b</option></select>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3"></div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-3"></div>
+        <div class="col-md-6 precall_panel precall_panel_error" id="audio_check">
+          <div class="col-md-3" id="mic_preview"><img src="https://tokbox.com/developer/tools/precall/images/icon-microphone-off.png">
+            <span>
+              <meter id="volume_level_meter" min="0" max="1" value="0">
+                <div id="volume_level_meter-ie">
+                  <span></span>
+                </div>
+              </meter>
+            </span>
+          </div>
+          <div class="col-md-9 section_details">
+            <div class="section_name section_name_success section_name_error">Audio - Device issue</div>
+            <div class="subtext">Say something in the microphone to check that it is working.</div>
+            <div class="padding_top10">
+              <select id="mic_dropdown"><option>Microphone: default</option><option>Microphone: eb25b1f265cd616ce41a18403e82a13b8e8b0ff3b19ff978f0964eab651803a1</option></select>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3"></div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-3"></div>
+        <div class="col-md-6 precall_panel precall_panel_footer" id="browser_check">
+          <div class="col-md-3" id="browser_preview"><img src="https://tokbox.com/developer/tools/precall/images/browser-chrome@2x.png"></div>
+          <div class="col-md-9 section_details">
+            <div class="section_name section_name_success">Browser Compatibility</div>
+            <div id="browser_test_results">Chrome is supported by OpenTok.</div>
+          </div>
+        </div>
+        <div class="col-md-3"></div>
+      </div>
+
+    </div>
+    <div id="connectivity_tests" class="connectivity_tests" style="display: none">
+      <div class="row margin_top_30">
+        <div class="col-md-3"></div>
+        <div class="col-md-6 precall_panel precall_panel_header">
+          <div class="col-md-12">Connectivity to OpenTok Servers</div>
+        </div>
+        <div class="col-md-3"></div>
+      </div>
+      <div class="row">
+        <div class="col-md-3"></div>
+        <div class="col-md-6 precall_panel api_status_light" id="api_server_test">
+          <div class="col-md-3 connectivity_test_status connectivity_test_success" id="api_server_status">
+            <img id="api_img" src="https://tokbox.com/developer/tools/precall/images/server-on.png">
+            <div>API Server</div>
+          </div>
+          <div class="col-md-9 section_details">
+            <div id="api_section_name" class="section_name section_name_success">OpenTok API server - Connected</div>
+            <div class="subtext">Connects to OpenTok and used for session initialization and
+              signaling.</div>
+            <div id="api_results">Successfully connected to the OpenTok API server.</div>
+          </div>
+        </div>
+        <div class="col-md-3"></div>
+      </div>
+      <div class="row">
+        <div class="col-md-3"></div>
+        <div class="col-md-6 precall_panel api_status_light" id="messaging_socket_test">
+          <div class="col-md-3 connectivity_test_status connectivity_test_success" id="messaging_server_status">
+            <img id="messaging_img" src="https://tokbox.com/developer/tools/precall/images/server-on.png">
+            <div>Messaging WebSocket</div>
+          </div>
+          <div class="col-md-9 section_details">
+            <div id="messaging_section_name" class="section_name section_name_success">OpenTok Messaging WebSocket - Connected</div>
+            <div class="subtext">Clients send and receive OpenTok session-related messages using this WebSocket.</div>
+            <div id="messaging_results">Successfully connected to the OpenTok Messaging WebSocket.</div>
+          </div>
+        </div>
+        <div class="col-md-3"></div>
+      </div>
+      <div class="row">
+        <div class="col-md-3"></div>
+        <div class="col-md-6 precall_panel api_status_light" id="media_server_test">
+          <div class="col-md-3 connectivity_test_status connectivity_test_success" id="media_server_status">
+            <img id="media_img" src="https://tokbox.com/developer/tools/precall/images/server-on.png">
+            <div>Media Server</div>
+          </div>
+          <div class="col-md-9 section_details">
+            <div id="media_section_name" class="section_name section_name_success">OpenTok Media Server - Connected</div>
+            <div class="subtext">Clients send audio and video to our media server for intelligent
+              and efficient routing to their destination.</div>
+            <div id="media_results">Successfully connected to the OpenTok Media Server.</div>
+          </div>
+        </div>
+        <div class="col-md-3"></div>
+      </div>
+<!--      <div class="row">-->
+<!--        <div class="col-md-3"></div>-->
+<!--        <div class="col-md-6 precall_panel precall_panel_footer api_status_light" id="log_server_test">-->
+<!--          <div class="col-md-3 connectivity_test_status api_status_light_footer connectivity_test_success" id="log_server_status">-->
+<!--            <img id=log_img" src="https://tokbox.com/developer/tools/precall/images/server-on.png">-->
+<!--            <div>Logging Server</div>-->
+<!--          </div>-->
+<!--          <div class="col-md-9 section_details">-->
+<!--            <div id="log_section_name" class="section_name section_name_success">Logging Server - Connected</div>-->
+<!--            <div class="subtext">Our logging server collects anonymized data about quality and-->
+<!--              possible errors.</div>-->
+<!--            <div id="log_results">Successfully connected to the OpenTok logging server.</div>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--        <div class="col-md-3"></div>-->
+<!--      </div>-->
+    </div>
+    <script type="text/javascript" src="results.bundle.js"></script>
+  </body>
+</html>
