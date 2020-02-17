@@ -106,10 +106,17 @@ function setData(section, flag) {
 
 export function displayResults() {
   const statusContainer = document.getElementById('connectivity_tests');
-  setData('api', failureTypes.indexOf('api') <= -1);
-  setData('messaging', failureTypes.indexOf('messaging') <= -1);
-  setData('media', failureTypes.indexOf('media') <= -1);
-  // setData('log', failureTypes.indexOf('logging') <= -1);
+
+  if(failureTypes.indexOf('OpenTok.js') > -1){
+    setData('api', false);
+    setData('messaging', false);
+    setData('media', false);
+  } else {
+    setData('api', failureTypes.indexOf('api') <= -1);
+    setData('messaging', failureTypes.indexOf('messaging') <= -1);
+    setData('media', failureTypes.indexOf('media') <= -1);
+    // setData('log', failureTypes.indexOf('logging') <= -1);
+  }
   statusContainer.style.display = 'block';
 }
 
@@ -132,6 +139,7 @@ function convertFailedTestsToString(failedTests) {
   if (failureTypes.indexOf('logging') > -1) {
     mappedFailures.push('OpenTok logging server');
   }
+
   return mappedFailures.join(', ');
 }
 

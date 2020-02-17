@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="assets/styles.css"  rel="stylesheet">
     <link href="assets/precallResults.css"  rel="stylesheet">
+    <link href="assets/opentok-hardware-setup.css"  rel="stylesheet">
     <link href="assets/bootstrap.min.css"  rel="stylesheet">
   </head>
   <body>
@@ -93,63 +94,7 @@
         </div>
     </div>
     </div>
-    <div id="hardware_software_setup" style="display: none">
-      <div class="row margin_top_30 hardware_software_setup">
-        <div class="col-md-3"></div>
-        <div class="col-md-6 precall_panel precall_panel_header precall_panel_header_error" id="precall_setup">
-          <div class="col-md-12">Hardware &amp; Software Setup</div>
-        </div>
-        <div class="col-md-3"></div>
-      </div>
-      <div class="row" id="video_check_row">
-        <div class="col-md-3"></div>
-        <div class="col-md-6 precall_panel precall_panel_error" id="video_check">
-          <div class="col-md-3" id="camera_preview"></div>
-          <div class="col-md-9 section_details">
-            <div class="section_name section_name_success section_name_error">Video - Device issue</div>
-            <text class="subtext">A camera was found, but it is not sending video data. Please try a new camera.</text>
-            <div class="padding_top10">
-              <select id="cam_dropdown"><option>Camera: 17d01c842ade26abe4ce5f83b6e33b19d783d6a86d725d7d9cf3bbc754a9a28b</option></select>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-3"></div>
-      </div>
-
-      <div class="row">
-        <div class="col-md-3"></div>
-        <div class="col-md-6 precall_panel precall_panel_error" id="audio_check">
-          <div class="col-md-3" id="mic_preview"><img src="https://tokbox.com/developer/tools/precall/images/icon-microphone-off.png">
-            <span>
-              <meter id="volume_level_meter" min="0" max="1" value="0">
-                <div id="volume_level_meter-ie">
-                  <span></span>
-                </div>
-              </meter>
-            </span>
-          </div>
-          <div class="col-md-9 section_details">
-            <div class="section_name section_name_success section_name_error">Audio - Device issue</div>
-            <div class="subtext">Say something in the microphone to check that it is working.</div>
-            <div class="padding_top10">
-              <select id="mic_dropdown"><option>Microphone: default</option><option>Microphone: eb25b1f265cd616ce41a18403e82a13b8e8b0ff3b19ff978f0964eab651803a1</option></select>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-3"></div>
-      </div>
-
-      <div class="row">
-        <div class="col-md-3"></div>
-        <div class="col-md-6 precall_panel precall_panel_footer" id="browser_check">
-          <div class="col-md-3" id="browser_preview"><img src="https://tokbox.com/developer/tools/precall/images/browser-chrome@2x.png"></div>
-          <div class="col-md-9 section_details">
-            <div class="section_name section_name_success">Browser Compatibility</div>
-            <div id="browser_test_results">Chrome is supported by OpenTok.</div>
-          </div>
-        </div>
-        <div class="col-md-3"></div>
-      </div>
+    <div id="hardware-setup">
 
     </div>
     <div id="connectivity_tests" class="connectivity_tests" style="display: none">
@@ -224,6 +169,14 @@
 <!--        <div class="col-md-3"></div>-->
 <!--      </div>-->
     </div>
-    <script type="text/javascript" src="results.bundle.js"></script>
+    <script type="text/javascript" src="bundle.js"></script>
   </body>
 </html>
+
+<style>
+  #hardware-setup{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+</style>

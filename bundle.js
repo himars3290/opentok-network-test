@@ -9530,7 +9530,11 @@ var _connectivityUi = __webpack_require__(338);
 
 var ConnectivityUI = _interopRequireWildcard(_connectivityUi);
 
-var _config = __webpack_require__(339);
+var _opentokHardwareSetup = __webpack_require__(339);
+
+var HardwareSetup = _interopRequireWildcard(_opentokHardwareSetup);
+
+var _config = __webpack_require__(340);
 
 var _config2 = _interopRequireDefault(_config);
 
@@ -9576,10 +9580,29 @@ function testQuality() {
     ConnectivityUI.graphIntermediateStats('audio', stats);
     ConnectivityUI.graphIntermediateStats('video', stats);
   }).then(function (results) {
-    ConnectivityUI.displayTestQualityResults(null, results);
     ConnectivityUI.displayResults();
+
+    ConnectivityUI.displayTestQualityResults(null, results);
+    var element = document.querySelector('#hardware-setup');
+
+    var component = HardwareSetup.createOpentokHardwareSetupComponent(element, {
+      insertMode: 'append'
+    }, function (error) {
+      if (error) {
+        console.error('Error: ', error);
+        document.querySelector('#hardware-setup').innerHTML = '<strong>Error getting ' + 'devices</strong>: ' + error.message;
+        return;
+      }
+
+      // var button = document.createElement('button');
+      // button.onclick = component.destroy;
+      // button.appendChild(document.createTextNode('Destroy'));
+      // element.appendChild(button);
+    });
   }).catch(function (error) {
-    return ConnectivityUI.displayTestQualityResults(error);
+    ConnectivityUI.displayResults();
+
+    ConnectivityUI.displayTestQualityResults(error);
   });
 }
 
@@ -11771,10 +11794,17 @@ function setData(section, flag) {
 
 function displayResults() {
   var statusContainer = document.getElementById('connectivity_tests');
-  setData('api', failureTypes.indexOf('api') <= -1);
-  setData('messaging', failureTypes.indexOf('messaging') <= -1);
-  setData('media', failureTypes.indexOf('media') <= -1);
-  // setData('log', failureTypes.indexOf('logging') <= -1);
+
+  if (failureTypes.indexOf('OpenTok.js') > -1) {
+    setData('api', false);
+    setData('messaging', false);
+    setData('media', false);
+  } else {
+    setData('api', failureTypes.indexOf('api') <= -1);
+    setData('messaging', failureTypes.indexOf('messaging') <= -1);
+    setData('media', failureTypes.indexOf('media') <= -1);
+    // setData('log', failureTypes.indexOf('logging') <= -1);
+  }
   statusContainer.style.display = 'block';
 }
 
@@ -11797,6 +11827,7 @@ function convertFailedTestsToString(failedTests) {
   if (failureTypes.indexOf('logging') > -1) {
     mappedFailures.push('OpenTok logging server');
   }
+
   return mappedFailures.join(', ');
 }
 
@@ -11884,10 +11915,491 @@ function graphIntermediateStats(mediaType, stats) {
 "use strict";
 
 
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+exports.createOpentokHardwareSetupComponent = createOpentokHardwareSetupComponent;
+var gumNamesToMessages = {
+  PermissionDeniedError: 'End-user denied permission to hardware devices',
+  PermissionDismissedError: 'End-user dismissed permission to hardware devices',
+  NotSupportedError: 'A constraint specified is not supported by the browser.',
+  ConstraintNotSatisfiedError: 'It\'s not possible to satisfy one or more constraints ' + 'passed into the getUserMedia function',
+  OverconstrainedError: 'Due to changes in the environment, one or more mandatory ' + 'constraints can no longer be satisfied.',
+  NoDevicesFoundError: 'No voice or video input devices are available on this machine.',
+  HardwareUnavailableError: 'The selected voice or video devices are unavailable. Verify ' + 'that the chosen devices are not in use by another application.'
+};
+
+var isArray = _typeof(Array.isArray) && Array.isArray || function (arry) {
+  return Object.prototype.toString.call(arry) === '[object Array]';
+};
+
+var each = Array.prototype.forEach || function (iter, ctx) {
+  for (var idx = 0, count = this.length || 0; idx < count; ++idx) {
+    if (idx in this) {
+      iter.call(ctx, this[idx], idx);
+    }
+  }
+};
+
+var addClass = function addClass(el, className) {
+  if (el.classList) {
+    el.classList.add(className);
+  } else {
+    el.className += ' ' + className;
+  }
+};
+
+var removeClass = function removeClass(el, className) {
+  if (el.classList) {
+    el.classList.remove(className);
+  } else {
+    el.className = el.className.replace(new RegExp('(^|\\b)' + className.split(' ').join('|') + '(\\b|$)', 'gi'), ' ');
+  }
+};
+
+var setPref = function setPref(key, value) {
+  try {
+    localStorage.setItem(key, value);
+  } catch (err) {}
+};
+
+var getPref = function getPref(key) {
+  try {
+    return localStorage.getItem(key);
+  } catch (err) {}
+  return undefined;
+};
+
+var createElement = function createElement(nodeName, attributes, children, doc) {
+  var element = (doc || document).createElement(nodeName);
+
+  if (attributes) {
+    for (var name in attributes) {
+      if (_typeof(attributes[name]) === 'object') {
+        if (!element[name]) element[name] = {};
+
+        var subAttrs = attributes[name];
+        for (var n in subAttrs) {
+          element[name][n] = subAttrs[n];
+        }
+      } else if (name === 'className') {
+        element.className = attributes[name];
+      } else {
+        element.setAttribute(name, attributes[name]);
+      }
+    }
+  }
+
+  var setChildren = function setChildren(child) {
+    if (typeof child === 'string') {
+      element.innerHTML = element.innerHTML + child;
+    } else {
+      element.appendChild(child);
+    }
+  };
+
+  if (isArray(children)) {
+    each.call(children, setChildren);
+  } else if (children) {
+    setChildren(children);
+  }
+
+  return element;
+};
+
+var createDevicePickerController = function createDevicePickerController(opts, changeHandler) {
+  var _devicePicker = {},
+      destroyExistingPublisher,
+      publisher,
+      devicesById;
+
+  function onChange() {
+    destroyExistingPublisher();
+
+    var settings;
+
+    _devicePicker.pickedDevice = devicesById[opts.selectTag.value];
+
+    if (!_devicePicker.pickedDevice) {
+      return;
+    }
+
+    settings = {
+      insertMode: 'append',
+      name: _devicePicker.pickedDevice.label,
+      audioSource: null,
+      videoSource: null,
+      width: 220,
+      height: 170,
+      fitMode: 'cover',
+      style: {
+        audioLevelDisplayMode: 'off'
+      },
+      showControls: false
+    };
+
+    settings[opts.mode] = _devicePicker.pickedDevice.deviceId;
+
+    var widgetTag = opts.previewTag,
+        audioDisplayTag,
+        audioDisplayParent;
+
+    if (opts.mode === 'audioSource') {
+      opts.previewTag.innerHTML = '';
+
+      audioDisplayTag = createElement('div', {
+        className: 'opentok-hardware-setup-activity-fg',
+        style: 'width: 0px;'
+      });
+
+      audioDisplayParent = createElement('div', {
+        className: 'opentok-hardware-setup-activity-bg'
+      }, audioDisplayTag);
+
+      widgetTag = createElement('div', { style: 'display: none;' });
+
+      opts.previewTag.appendChild(widgetTag);
+      opts.previewTag.appendChild(audioDisplayParent);
+    }
+
+    var pub = OT.initPublisher(widgetTag, settings);
+
+    pub.on({
+      accessAllowed: function accessAllowed() {
+        if (typeof changeHandler === 'function') {
+          changeHandler(_devicePicker);
+        }
+      }
+    });
+
+    var movingAvg = null;
+
+    if (opts.mode === 'audioSource') {
+
+      pub.on('audioLevelUpdated', function (event) {
+        if (movingAvg === null || movingAvg <= event.audioLevel) {
+          movingAvg = event.audioLevel;
+        } else {
+          movingAvg = 0.7 * movingAvg + 0.3 * event.audioLevel;
+        }
+
+        // 1.5 scaling to map the -30 - 0 dBm range to [0,1]
+        var logLevel = Math.log(movingAvg) / Math.LN10 / 1.5 + 1;
+        logLevel = Math.min(Math.max(logLevel, 0), 1);
+
+        var tagCount = audioDisplayTag.parentNode.offsetWidth / 10;
+        audioDisplayTag.style.width = Math.ceil(tagCount * logLevel) * 10 + 'px';
+        // audioDisplayTag.innerHTML = (logLevel * 100).toFixed(0);
+      });
+    }
+
+    publisher = pub;
+  }
+
+  _devicePicker.cleanup = destroyExistingPublisher = function destroyExistingPublisher() {
+    if (publisher) {
+      publisher.destroy();
+      publisher = void 0;
+    }
+  };
+
+  var disableSelector = function disableSelector(opt, str) {
+    opt.innerHTML = '';
+    opt.appendChild(createElement('option', {}, str));
+    opt.setAttribute('disabled', '');
+  };
+
+  var deviceLabel = function deviceLabel(device) {
+    if (device.label) {
+      return device.label;
+    }
+    return (opts.mode !== 'audioSource' && 'Camera' || 'Mic') + ' (' + device.deviceId.substring(0, 8) + ')';
+  };
+
+  var addDevice = function addDevice(device) {
+    devicesById[device.deviceId] = device;
+    return createElement('option', { value: device.deviceId }, deviceLabel(device));
+  };
+
+  _devicePicker.setDeviceList = function (devices) {
+    opts.selectTag.innerHTML = '';
+    devicesById = {};
+    if (devices.length > 0) {
+      devices.map(addDevice).map(function (tag) {
+        opts.selectTag.appendChild(tag);
+      });
+      opts.selectTag.removeAttribute('disabled');
+    } else {
+      disableSelector(opts.selectTag, 'No devices');
+    }
+    if (opts.defaultDevice) {
+      opts.selectTag.value = opts.defaultDevice;
+    }
+    onChange();
+  };
+
+  _devicePicker.setLoading = function () {
+    disableSelector(opts.selectTag, 'Loading...');
+  };
+
+  if (opts.selectTag.addEventListener) {
+    opts.selectTag.addEventListener('change', onChange, false);
+  } else if (opts.selectTag.attachEvent) {
+    opts.selectTag.attachEvent('onchange', onChange);
+  } else {
+    opts.selectTag.onchange = onChange();
+  }
+
+  return _devicePicker;
+};
+
+var getWindowLocationProtocol = function getWindowLocationProtocol() {
+  return window.location.protocol;
+};
+
+var shouldGetDevices = function shouldGetDevices(callback) {
+  OT.getDevices(function (error, devices) {
+    if (error) {
+      callback(error);
+      return;
+    }
+    callback(undefined, {
+      audio: devices.some(function (device) {
+        return device.kind === 'audioInput';
+      }),
+      video: devices.some(function (device) {
+        return device.kind === 'videoInput';
+      })
+    });
+  });
+};
+
+var getUserMedia;
+if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+  getUserMedia = function getUserMedia(constraints, onStream, onError) {
+    navigator.mediaDevices.getUserMedia(constraints).then(onStream, onError);
+  };
+} else if (navigator.getUserMedia) {
+  getUserMedia = navigator.getUserMedia.bind(navigator);
+} else if (navigator.mozGetUserMedia) {
+  getUserMedia = navigator.mozGetUserMedia.bind(navigator);
+} else if (navigator.webkitGetUserMedia) {
+  getUserMedia = navigator.webkitGetUserMedia.bind(navigator);
+} else if (window.OTPlugin && window.OTPlugin.getUserMedia) {
+  getUserMedia = window.OTPlugin.getUserMedia.bind(window.OTPlugin);
+}
+
+var authenticateForDeviceLabels = function authenticateForDeviceLabels(callback) {
+  shouldGetDevices(function (error, constraints) {
+    if (error) {
+      callback(error);
+    } else {
+      if (constraints.video === false && constraints.audio === false) {
+        callback(new Error('There are no audio or video devices available'));
+      } else {
+        if (getWindowLocationProtocol() === 'http:') {
+          callback();
+        } else {
+          if (!getUserMedia) {
+            return callback(new Error('getUserMedia not supported in this browser'));
+          }
+          getUserMedia(constraints, function (stream) {
+            if (window.MediaStreamTrack && window.MediaStreamTrack.prototype.stop) {
+              var tracks = stream.getTracks();
+              tracks.forEach(function (track) {
+                track.stop();
+              });
+            } else if (stream.stop) {
+              // older spec
+              stream.stop();
+            }
+            callback();
+          }, function (error) {
+            var err = new Error(gumNamesToMessages[error.name]);
+            err.name = error.name;
+            callback(err);
+          });
+        }
+      }
+    }
+  });
+};
+
+function createOpentokHardwareSetupComponent(targetElement, options, callback) {
+
+  if (typeof targetElement === 'string') {
+    targetElement = document.getElementById(targetElement);
+  }
+
+  var _hardwareSetup = {},
+      _options,
+      state = 'getDevices',
+      camera,
+      microphone,
+      camSelector,
+      camPreview,
+      micSelector,
+      micPreview,
+      container;
+
+  if (typeof options === 'function') {
+    callback = options;
+    options = {};
+  }
+
+  if (callback == null) {
+    throw new Error('A completion handler is required when calling ' + 'createOpentokHardwareSetupComponent');
+  }
+
+  _options = {
+    insertMode: options.insertMode || 'replace',
+    defaultAudioDevice: options.defaultAudioDevice || getPref('com.opentok.hardwaresetup.audio'),
+    defaultVideoDevice: options.defaultVideoDevice || getPref('com.opentok.hardwaresetup.video')
+  };
+
+  _hardwareSetup.audioSource = function () {
+    return microphone && microphone.pickedDevice;
+  };
+
+  _hardwareSetup.videoSource = function () {
+    return camera && camera.pickedDevice;
+  };
+
+  _hardwareSetup.destroy = function () {
+    if (state === 'destroyed') {
+      return;
+    }
+    if (camera) {
+      camera.cleanup();
+    }
+    if (microphone) {
+      microphone.cleanup();
+    }
+    if (state === 'chooseDevices') {
+      targetElement.parentNode.removeChild(targetElement);
+    }
+    state = 'destroyed';
+  };
+
+  if (!targetElement) {
+    callback(new Error('No element provided to place component'));
+    return;
+  }
+
+  camSelector = createElement('select', {}, '');
+  camPreview = createElement('div', { className: 'opentok-hardware-setup-preview' }, '');
+  micSelector = createElement('select', {}, '');
+  micPreview = createElement('div', { className: 'opentok-hardware-setup-preview' }, '');
+
+  container = createElement('div', {
+    className: 'opentok-hardware-setup opentok-hardware-setup-loading'
+  });
+
+  var insertMode = _options.insertMode;
+  if (insertMode !== 'replace') {
+    if (insertMode === 'append') {
+      targetElement.appendChild(container);
+      targetElement = container;
+    } else if (insertMode === 'before') {
+      targetElement.parentNode.insertBefore(container, targetElement);
+      targetElement = container;
+    } else if (insertMode === 'after') {
+      targetElement.parentNode.insertBefore(container, targetElement.nextSibling);
+      targetElement = container;
+    }
+  } else {
+    targetElement.innerHTML = '';
+    addClass(targetElement, 'opentok-hardware-setup');
+    if (!targetElement.getAttribute('id')) {
+      targetElement.setAttribute('id', container.getAttribute('id'));
+    }
+    for (var key in container.style) {
+      if (!container.style.hasOwnProperty(key)) {
+        continue;
+      }
+      targetElement.style[key] = container.style[key];
+    }
+    while (container.childNodes.length > 0) {
+      targetElement.appendChild(container.firstChild);
+    }
+  }
+
+  addClass(targetElement, 'opentok-hardware-setup-loading');
+
+  authenticateForDeviceLabels(function (err) {
+    if (err) {
+      callback(err);
+    } else {
+
+      camera = createDevicePickerController({
+        selectTag: camSelector,
+        previewTag: camPreview,
+        mode: 'videoSource',
+        defaultDevice: _options.defaultVideoDevice
+      }, function (controller) {
+        setPref('com.opentok.hardwaresetup.video', controller.pickedDevice.deviceId);
+      });
+
+      microphone = createDevicePickerController({
+        selectTag: micSelector,
+        previewTag: micPreview,
+        mode: 'audioSource',
+        defaultDevice: _options.defaultAudioDevice
+      }, function (controller) {
+        setPref('com.opentok.hardwaresetup.audio', controller.pickedDevice.deviceId);
+      });
+
+      camera.setLoading();
+      microphone.setLoading();
+
+      OT.getDevices(function (error, devices) {
+        if (error) {
+          callback(error);
+          return;
+        }
+
+        if (state === 'destroyed') {
+          return; // They destroyed us before we got the devices, bail.
+        }
+
+        removeClass(container, 'opentok-hardware-setup-loading');
+
+        container.appendChild(createElement('div', { className: 'opentok-hardware-setup-camera' }, [createElement('div', { className: 'opentok-hardware-setup-label' }, 'Camera:'), createElement('div', { className: 'opentok-hardware-setup-selector' }, camSelector), camPreview]));
+
+        container.appendChild(createElement('div', { className: 'opentok-hardware-setup-mic' }, [createElement('div', { className: 'opentok-hardware-setup-label' }, 'Mic:'), createElement('div', { className: 'opentok-hardware-setup-selector' }, micSelector), micPreview]));
+
+        camera.setDeviceList(devices.filter(function (device) {
+          return device.kind === 'videoInput';
+        }));
+
+        microphone.setDeviceList(devices.filter(function (device) {
+          return device.kind === 'audioInput';
+        }));
+
+        state = 'chooseDevices';
+
+        callback(undefined, _hardwareSetup);
+      });
+    }
+  });
+
+  return _hardwareSetup;
+}
+
+/***/ }),
+/* 340 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
 module.exports = {
   apiKey: '46116222', // Add your own OpenTok API key here. See the README in this directory.
-  sessionId: '1_MX40NjExNjIyMn5-MTU4MTUzNDc2MTc0Nn5tR0pkL3A4aVVvTzcwNHJGdGhJbjI2cUZ-fg', // Add your own session ID here
-  token: 'T1==cGFydG5lcl9pZD00NjExNjIyMiZzaWc9MmZjODY3ZjQwMmNlNzRjODliNTdiYjE1YTcyZDE4Mzg4ODBiM2M5MDpzZXNzaW9uX2lkPTFfTVg0ME5qRXhOakl5TW41LU1UVTRNVFV6TkRjMk1UYzBObjV0UjBwa0wzQTRhVlZ2VHpjd05ISkdkR2hKYmpJMmNVWi1mZyZjcmVhdGVfdGltZT0xNTgxNTM0NzYxJnJvbGU9bW9kZXJhdG9yJm5vbmNlPTE1ODE1MzQ3NjEuNzU0NTEwNjc5MjI5Mzg=' // Add your own token here
+  sessionId: '2_MX40NjExNjIyMn5-MTU4MTg5NjQwNjE3OX5nWERRWklMZks4ZHZkWkVZdFdFN3FRMmZ-fg', // Add your own session ID here
+  token: 'T1==cGFydG5lcl9pZD00NjExNjIyMiZzaWc9ZjAxZDU4Yjg4ZjEyOTk5ZmY4NWM0NGY0M2VhNzNmYjM0ZDk0ZmRjYTpzZXNzaW9uX2lkPTJfTVg0ME5qRXhOakl5TW41LU1UVTRNVGc1TmpRd05qRTNPWDVuV0VSUldrbE1aa3M0Wkhaa1drVlpkRmRGTjNGUk1tWi1mZyZjcmVhdGVfdGltZT0xNTgxODk2NDA2JnJvbGU9bW9kZXJhdG9yJm5vbmNlPTE1ODE4OTY0MDYuMTg1ODEwNDA4NzYxMQ==' // Add your own token here
 };
 
 /***/ })
