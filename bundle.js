@@ -9534,7 +9534,11 @@ var _opentokHardwareSetup = __webpack_require__(339);
 
 var HardwareSetup = _interopRequireWildcard(_opentokHardwareSetup);
 
-var _config = __webpack_require__(340);
+var _recorder = __webpack_require__(340);
+
+var Recorder = _interopRequireWildcard(_recorder);
+
+var _config = __webpack_require__(341);
 
 var _config2 = _interopRequireDefault(_config);
 
@@ -9593,11 +9597,10 @@ function testQuality() {
         document.querySelector('#hardware-setup').innerHTML = '<strong>Error getting ' + 'devices</strong>: ' + error.message;
         return;
       }
-
-      // var button = document.createElement('button');
-      // button.onclick = component.destroy;
-      // button.appendChild(document.createTextNode('Destroy'));
-      // element.appendChild(button);
+      document.getElementById("action").addEventListener("click", function () {
+        Recorder.handleAction();
+        document.getElementById("action").innerHTML("Recording...");
+      });
     });
   }).catch(function (error) {
     ConnectivityUI.displayResults();
@@ -12396,10 +12399,133 @@ function createOpentokHardwareSetupComponent(targetElement, options, callback) {
 "use strict";
 
 
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
+var recordAudio = function recordAudio() {
+  return new Promise(function () {
+    var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(resolve) {
+      var stream, mediaRecorder, audioChunks, start, stop;
+      return regeneratorRuntime.wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              _context.next = 2;
+              return navigator.mediaDevices.getUserMedia({ audio: true });
+
+            case 2:
+              stream = _context.sent;
+              mediaRecorder = new MediaRecorder(stream);
+              audioChunks = [];
+
+
+              mediaRecorder.addEventListener("dataavailable", function (event) {
+                audioChunks.push(event.data);
+              });
+
+              start = function start() {
+                return mediaRecorder.start();
+              };
+
+              stop = function stop() {
+                return new Promise(function (resolve) {
+                  mediaRecorder.addEventListener("stop", function () {
+                    var audioBlob = new Blob(audioChunks);
+                    var audioUrl = URL.createObjectURL(audioBlob);
+                    console.log(audioUrl);
+                    var audio = new Audio(audioUrl);
+                    var play = function play() {
+                      return audio.play();
+                    };
+                    resolve({ audioBlob: audioBlob, audioUrl: audioUrl, play: play });
+                  });
+
+                  mediaRecorder.stop();
+                });
+              };
+
+              resolve({ start: start, stop: stop });
+
+            case 9:
+            case "end":
+              return _context.stop();
+          }
+        }
+      }, _callee, undefined);
+    }));
+
+    return function (_x) {
+      return _ref.apply(this, arguments);
+    };
+  }());
+};
+
+var sleep = function sleep(time) {
+  return new Promise(function (resolve) {
+    return setTimeout(resolve, time);
+  });
+};
+
+var handleAction = exports.handleAction = function () {
+  var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2() {
+    var recorder, actionButton, audio;
+    return regeneratorRuntime.wrap(function _callee2$(_context2) {
+      while (1) {
+        switch (_context2.prev = _context2.next) {
+          case 0:
+            _context2.next = 2;
+            return recordAudio();
+
+          case 2:
+            recorder = _context2.sent;
+            actionButton = document.getElementById('action');
+
+            actionButton.disabled = true;
+            recorder.start();
+            _context2.next = 8;
+            return sleep(3000);
+
+          case 8:
+            _context2.next = 10;
+            return recorder.stop();
+
+          case 10:
+            audio = _context2.sent;
+
+            audio.play();
+            _context2.next = 14;
+            return sleep(3000);
+
+          case 14:
+            actionButton.disabled = false;
+
+          case 15:
+          case "end":
+            return _context2.stop();
+        }
+      }
+    }, _callee2, undefined);
+  }));
+
+  return function handleAction() {
+    return _ref2.apply(this, arguments);
+  };
+}();
+
+/***/ }),
+/* 341 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
 module.exports = {
   apiKey: '46116222', // Add your own OpenTok API key here. See the README in this directory.
-  sessionId: '2_MX40NjExNjIyMn5-MTU4MTg5NjQwNjE3OX5nWERRWklMZks4ZHZkWkVZdFdFN3FRMmZ-fg', // Add your own session ID here
-  token: 'T1==cGFydG5lcl9pZD00NjExNjIyMiZzaWc9ZjAxZDU4Yjg4ZjEyOTk5ZmY4NWM0NGY0M2VhNzNmYjM0ZDk0ZmRjYTpzZXNzaW9uX2lkPTJfTVg0ME5qRXhOakl5TW41LU1UVTRNVGc1TmpRd05qRTNPWDVuV0VSUldrbE1aa3M0Wkhaa1drVlpkRmRGTjNGUk1tWi1mZyZjcmVhdGVfdGltZT0xNTgxODk2NDA2JnJvbGU9bW9kZXJhdG9yJm5vbmNlPTE1ODE4OTY0MDYuMTg1ODEwNDA4NzYxMQ==' // Add your own token here
+  sessionId: '2_MX40NjExNjIyMn5-MTU4MjM4MTE0NTk0Mn5xUlFkTzVLYmtUalpwSmx6d05xdU11TlN-fg', // Add your own session ID here
+  token: 'T1==cGFydG5lcl9pZD00NjExNjIyMiZzaWc9OWFmMjFlMTViMzYyN2IwODA5MWM5MGE3N2ZkZjRhYWJjYjViYTY4NDpzZXNzaW9uX2lkPTJfTVg0ME5qRXhOakl5TW41LU1UVTRNak00TVRFME5UazBNbjV4VWxGa1R6VkxZbXRVYWxwd1NteDZkMDV4ZFUxMVRsTi1mZyZjcmVhdGVfdGltZT0xNTgyMzgxMTQ1JnJvbGU9bW9kZXJhdG9yJm5vbmNlPTE1ODIzODExNDUuOTU4NjEwMDU3NTYzNTE=' // Add your own token here
 };
 
 /***/ })

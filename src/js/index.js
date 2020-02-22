@@ -2,6 +2,7 @@ import NetworkTest from 'opentok-network-test-js';
 import createChart from './chart.js';
 import * as ConnectivityUI from './connectivity-ui.js';
 import * as HardwareSetup from './opentok-hardware-setup'
+import * as Recorder from './recorder'
 import config from './config.js';
 
 let sessionInfo = config;
@@ -56,11 +57,11 @@ function testQuality() {
           'devices</strong>: ' + error.message;
         return;
       }
+    document.getElementById("action").addEventListener("click", function () {
+      Recorder.handleAction();
+      document.getElementById("action").innerHTML("Recording...");
+    } )
 
-      // var button = document.createElement('button');
-      // button.onclick = component.destroy;
-      // button.appendChild(document.createTextNode('Destroy'));
-      // element.appendChild(button);
 
     });
 
