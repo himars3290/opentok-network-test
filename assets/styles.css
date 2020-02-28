@@ -41,12 +41,12 @@ html, body {
   width: 100%;
 }
 
-.start-test-container, .results-container {
+.start-test-container{
   height: 100%;
   width: 100%;
 }
 
-.page-title {
+.title {
   text-align: center;
   font-family: "Work Sans Light";
   font-size: 21px;
@@ -62,7 +62,7 @@ html, body {
   letter-spacing: 0;
   color: #000000;
   opacity: 1;
-  padding: 30px 20%;
+  padding: 30px 21%;
 }
 
 .start-test-div {
@@ -96,10 +96,33 @@ button {
   opacity: 1;
 }
 
-hr{
+hr {
   width: 88px;
   height: 2px;
   background: #F8C73E;
   border-radius: 1px;
   opacity: 1;
+}
+
+.error {
+  color: #DA3236 !important;
+}
+
+#connectivity_status_container, #quality_status_container {
+  border-bottom: 1px solid #D4D4D4;
+  padding: 60.5px;
+  min-width: 768px;
+  width: 100%;
+}
+
+.audio, .video{
+  width: 100%;
+}
+
+.results{
+  height: 20em;
+}
+
+.graph{
+  padding: 1em 5em;
 }

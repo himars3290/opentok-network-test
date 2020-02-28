@@ -25,7 +25,10 @@ function startTest() {
   };
   otNetworkTest = new NetworkTest(OT, sessionInfo, options);
   otNetworkTest.testConnectivity()
-    .then(results => ConnectivityUI.displayTestConnectivityResults(results))
+    .then(results => {
+      ConnectivityUI.displayTestConnectivityResults(results);
+      return results;
+    })
     .then(testQuality);
 }
 
@@ -33,10 +36,10 @@ function testQuality() {
   createChart('audio');
   createChart('video');
   ConnectivityUI.init(audioOnly);
-  document.getElementById('stop_test').addEventListener('click', function stopTestListener() {
-    ConnectivityUI.hideStopButton();
-    otNetworkTest.stop();
-  });
+  // document.getElementById('stop_test').addEventListener('click', function stopTestListener() {
+  //   ConnectivityUI.hideStopButton();
+  //   otNetworkTest.stop();
+  // });
   otNetworkTest.testQuality(function updateCallback(stats) {
     ConnectivityUI.checkToDisplayStopButton();
     ConnectivityUI.graphIntermediateStats('audio', stats);

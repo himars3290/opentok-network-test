@@ -76,10 +76,12 @@ export function displayTestConnectivityResults(results) {
 
   let statusText;
   if (results.success) {
-    statusText = 'Passed';
+    statusMessageEl.classList.remove("error");
+    statusText = 'Connected';
     statusIconEl.src = 'assets/icon_pass.svg';
   } else {
-    statusText = 'Failed tests: ' + convertFailedTestsToString(results.failedTests);
+    statusMessageEl.classList.add("error");
+    statusText = convertFailedTestsToString(results.failedTests);
     statusIconEl.src = 'assets/icon_error.svg';
   }
   statusMessageEl.textContent = statusText;
@@ -121,8 +123,6 @@ export function displayResults() {
 }
 
 function convertFailedTestsToString(failedTests) {
-  console.log("failed test", failedTests);
-
   for (var i = 0; i < failedTests.length; i++) {
     failureTypes.push(failedTests[i].type);
   }
@@ -140,6 +140,9 @@ function convertFailedTestsToString(failedTests) {
     mappedFailures.push('OpenTok logging server');
   }
 
+  if(failureTypes.indexOf('OpenTok.js') > -1){
+    mappedFailures.push('Camera/Microphone not found');
+  }
   return mappedFailures.join(', ');
 }
 
@@ -160,7 +163,6 @@ function rateMosScore(mos) {
 }
 
 export function displayTestQualityResults(error, results) {
-  console.log("quality results");
   hideStopButton();
   const statusContainerEl = document.getElementById('quality_status_container');
   const statusEl = statusContainerEl.querySelector('p');

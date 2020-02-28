@@ -9566,7 +9566,8 @@ function startTest() {
   };
   otNetworkTest = new _opentokNetworkTestJs2.default(OT, sessionInfo, options);
   otNetworkTest.testConnectivity().then(function (results) {
-    return ConnectivityUI.displayTestConnectivityResults(results);
+    ConnectivityUI.displayTestConnectivityResults(results);
+    return results;
   }).then(testQuality);
 }
 
@@ -9574,10 +9575,10 @@ function testQuality() {
   (0, _chart2.default)('audio');
   (0, _chart2.default)('video');
   ConnectivityUI.init(audioOnly);
-  document.getElementById('stop_test').addEventListener('click', function stopTestListener() {
-    ConnectivityUI.hideStopButton();
-    otNetworkTest.stop();
-  });
+  // document.getElementById('stop_test').addEventListener('click', function stopTestListener() {
+  //   ConnectivityUI.hideStopButton();
+  //   otNetworkTest.stop();
+  // });
   otNetworkTest.testQuality(function updateCallback(stats) {
     ConnectivityUI.checkToDisplayStopButton();
     ConnectivityUI.graphIntermediateStats('audio', stats);
@@ -11766,10 +11767,12 @@ function displayTestConnectivityResults(results) {
 
   var statusText = void 0;
   if (results.success) {
-    statusText = 'Passed';
+    statusMessageEl.classList.remove("error");
+    statusText = 'Connected';
     statusIconEl.src = 'assets/icon_pass.svg';
   } else {
-    statusText = 'Failed tests: ' + convertFailedTestsToString(results.failedTests);
+    statusMessageEl.classList.add("error");
+    statusText = convertFailedTestsToString(results.failedTests);
     statusIconEl.src = 'assets/icon_error.svg';
   }
   statusMessageEl.textContent = statusText;
@@ -11811,8 +11814,6 @@ function displayResults() {
 }
 
 function convertFailedTestsToString(failedTests) {
-  console.log("failed test", failedTests);
-
   for (var i = 0; i < failedTests.length; i++) {
     failureTypes.push(failedTests[i].type);
   }
@@ -11830,6 +11831,9 @@ function convertFailedTestsToString(failedTests) {
     mappedFailures.push('OpenTok logging server');
   }
 
+  if (failureTypes.indexOf('OpenTok.js') > -1) {
+    mappedFailures.push('Camera/Microphone not found');
+  }
   return mappedFailures.join(', ');
 }
 
@@ -11850,7 +11854,6 @@ function rateMosScore(mos) {
 }
 
 function displayTestQualityResults(error, results) {
-  console.log("quality results");
   hideStopButton();
   var statusContainerEl = document.getElementById('quality_status_container');
   var statusEl = statusContainerEl.querySelector('p');
