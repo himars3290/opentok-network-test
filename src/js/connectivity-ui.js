@@ -17,31 +17,31 @@ const failureTypes = [];
 var messages = {
   "api": {
     "sectionTitle": {
-      "success": "OpenTok API server - Connected",
-      "error": "OpenTok API server - Error"
+      "success": "KUDO API server - Connected",
+      "error": "KUDO API server - Error"
     },
     "results":{
-      "success": "Successfully connected to the OpenTok API server.",
+      "success": "Successfully connected to the KUDO API server.",
       "error": "Could not connect to API server"
     }
   },
   "messaging": {
     "sectionTitle": {
-      "success": "OpenTok Messaging WebSocket - Connected",
-      "error": "OpenTok Messaging WebSocket - Error"
+      "success": "KUDO Messaging WebSocket - Connected",
+      "error": "KUDO Messaging WebSocket - Error"
     },
     "results":{
-      "success": "Successfully connected to the OpenTok Messaging WebSocket.",
+      "success": "Successfully connected to the KUDO Messaging WebSocket.",
       "error": "Could not connect to Messaging WebSocket"
     }
   },
   "media": {
     "sectionTitle": {
-      "success": "OpenTok Media Server - Connected",
-      "error": "OpenTok Media Server - Error"
+      "success": "KUDO Media Server - Connected",
+      "error": "KUDO Media Server - Error"
     },
     "results":{
-      "success": "Successfully connected to the OpenTok Media Server.",
+      "success": "Successfully connected to the KUDO Media Server.",
       "error": "Could not connect to Media Server"
     }
   },
@@ -128,16 +128,16 @@ function convertFailedTestsToString(failedTests) {
   }
   var mappedFailures = [];
   if (failureTypes.indexOf('api') > -1) {
-    mappedFailures.push('OpenTok API server');
+    mappedFailures.push('KUDO API server');
   }
   if (failureTypes.indexOf('messaging') > -1) {
-    mappedFailures.push('OpenTok messaging WebSocket');
+    mappedFailures.push('KUDO messaging WebSocket');
   }
   if (failureTypes.indexOf('media') > -1) {
-    mappedFailures.push('OpenTok Media Router');
+    mappedFailures.push('KUDO Media Router');
   }
   if (failureTypes.indexOf('logging') > -1) {
-    mappedFailures.push('OpenTok logging server');
+    mappedFailures.push('KUDO logging server');
   }
 
   if(failureTypes.indexOf('OpenTok.js') > -1){
@@ -171,11 +171,16 @@ export function displayTestQualityResults(error, results) {
   statusContainerEl.querySelector('#video .results').style.display = 'block';
 
   if (error) {
-    statusEl.textContent = error.message;
+    statusEl.classList.add("error");
+    statusEl.textContent = 'Permission Denied: End-user denied permission to hardware devices. Please give permission in the browser to proceed.';
     statusIconEl.src = 'assets/icon_error.svg';
+    $(".video").addClass('d-none');
+    $(".audio").addClass('d-none');
+
     return;
   }
-
+  $(".video").removeClass('d-none');
+  $(".audio").removeClass('d-none');
   statusEl.textContent = 'Test complete.';
   let resultsEl = statusContainerEl.querySelector('#audio .results');
   resultsEl.style.display = 'block';

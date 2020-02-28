@@ -48,6 +48,7 @@ function testQuality() {
     ConnectivityUI.displayResults();
 
     ConnectivityUI.displayTestQualityResults(null, results);
+    $(".hardware-setup-container").removeClass("d-none").addClass("d-flex");
     var element = document.querySelector('#hardware-setup');
 
     var component = HardwareSetup.createOpentokHardwareSetupComponent(element, {

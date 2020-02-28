@@ -315,10 +315,14 @@
 }
 
 .connectivity_test_fail {
+  min-width: 200px;
+  width: 250px;
   background-color: #d0021b;
 }
 
 .connectivity_test_stopped {
+  min-width: 200px;
+  width: 250px;
   background-color: #7d888e;
 }
 
