@@ -36,16 +36,16 @@
       Testing Camera and Microphone Connection
     </div>
     <hr style="margin-bottom:30px">
-    <p class="title" style="color: #000000">Test in progress.</p>
+    <p class="title">Test in progress.</p>
     <img src="assets/spinner.gif">
   </div>
   <div id="quality_status_container" class="d-flex flex-column">
     <div id="quality_header" class="d-flex flex-column justify-content-center align-items-center">
       <div class="page-subtitle">Testing quality</div>
       <hr style="margin-bottom:30px">
-      <p class="title" style="color: #000000">Test in progress.</p>
+      <p class="title">Test in progress.</p>
       <img src="assets/spinner.gif">
-      <button id="stop_test">Stop test</button>
+      <button id="stop_test" class="mt-3">Stop test</button>
     </div>
     <div class="d-flex" style="justify-content: space-evenly">
       <div class="audio" id="audio">
@@ -100,70 +100,72 @@
       </div>
     </div>
   </div>
-</div>
-
-<div id="hardware-setup">
-
-</div>
-<div id="connectivity_tests" class="connectivity_tests" style="display: none">
-  <div class="row margin_top_30">
-    <div class="col-md-3"></div>
-    <div class="col-md-6 precall_panel precall_panel_header">
-      <div class="col-md-12">Connectivity to OpenTok Servers</div>
+  <div id="hardware_setup_container" class="d-flex flex-column justify-content-center align-items-center">
+    <div class="page-subtitle">
+      Audio / Video Settings
     </div>
-    <div class="col-md-3"></div>
+    <hr style="margin-bottom:30px">
+    <div id="hardware-setup">
+    </div>
   </div>
-  <div class="row">
-    <div class="col-md-3"></div>
-    <div class="col-md-6 precall_panel api_status_light" id="api_server_test">
-      <div class="col-md-3 connectivity_test_status connectivity_test_success" id="api_server_status">
+</div>
+
+<div id="connectivity_tests" class="connectivity_tests" style="display: none">
+  <div class="page-subtitle">
+    Connectivity to KUDO Servers
+  </div>
+  <hr style="margin-bottom:30px">
+  <div class="connectivity-grid">
+    <div class="empty"></div>
+    <div class="precall_panel api_status_light d-flex" id="api_server_test">
+      <div class="connectivity_test_status connectivity_test_success" id="api_server_status">
         <img id="api_img" src="https://tokbox.com/developer/tools/precall/images/server-on.png">
         <div>API Server</div>
       </div>
-      <div class="col-md-9 section_details">
-        <div id="api_section_name" class="section_name section_name_success">OpenTok API server - Connected</div>
-        <div class="subtext">Connects to OpenTok and used for session initialization and
+      <div class="section_details">
+        <div id="api_section_name" class="section_name section_name_success">KUDO API server - Connected</div>
+        <div class="subtext">Connects to KUDO and used for session initialization and
           signaling.
         </div>
-        <div id="api_results">Successfully connected to the OpenTok API server.</div>
+        <div id="api_results">Successfully connected to the KUDO API server.</div>
       </div>
     </div>
-    <div class="col-md-3"></div>
-  </div>
-  <div class="row">
-    <div class="col-md-3"></div>
-    <div class="col-md-6 precall_panel api_status_light" id="messaging_socket_test">
-      <div class="col-md-3 connectivity_test_status connectivity_test_success" id="messaging_server_status">
+    <div class="empty"></div>
+
+    <div class="empty"></div>
+    <div class="precall_panel api_status_light d-flex" id="messaging_socket_test">
+      <div class="connectivity_test_status connectivity_test_success" id="messaging_server_status">
         <img id="messaging_img" src="https://tokbox.com/developer/tools/precall/images/server-on.png">
         <div>Messaging WebSocket</div>
       </div>
-      <div class="col-md-9 section_details">
-        <div id="messaging_section_name" class="section_name section_name_success">OpenTok Messaging WebSocket -
+      <div class="section_details">
+        <div id="messaging_section_name" class="section_name section_name_success">KUDO Messaging WebSocket -
           Connected
         </div>
-        <div class="subtext">Clients send and receive OpenTok session-related messages using this WebSocket.</div>
-        <div id="messaging_results">Successfully connected to the OpenTok Messaging WebSocket.</div>
+        <div class="subtext">Clients send and receive KUDO session-related messages using this WebSocket.</div>
+        <div id="messaging_results">Successfully connected to the KUDO Messaging WebSocket.</div>
       </div>
     </div>
-    <div class="col-md-3"></div>
-  </div>
-  <div class="row">
-    <div class="col-md-3"></div>
-    <div class="col-md-6 precall_panel api_status_light" id="media_server_test">
-      <div class="col-md-3 connectivity_test_status connectivity_test_success" id="media_server_status">
+    <div class="empty"></div>
+
+    <div class="empty"></div>
+    <div class="precall_panel api_status_light d-flex" id="media_server_test">
+      <div class="connectivity_test_status connectivity_test_success" id="media_server_status">
         <img id="media_img" src="https://tokbox.com/developer/tools/precall/images/server-on.png">
         <div>Media Server</div>
       </div>
-      <div class="col-md-9 section_details">
-        <div id="media_section_name" class="section_name section_name_success">OpenTok Media Server - Connected</div>
+      <div class="section_details">
+        <div id="media_section_name" class="section_name section_name_success">KUDO Media Server - Connected</div>
         <div class="subtext">Clients send audio and video to our media server for intelligent
           and efficient routing to their destination.
         </div>
-        <div id="media_results">Successfully connected to the OpenTok Media Server.</div>
+        <div id="media_results">Successfully connected to the KUDO Media Server.</div>
       </div>
     </div>
-    <div class="col-md-3"></div>
+    <div class="empty"></div>
   </div>
+
+
   <!--        <div class="row">-->
   <!--          <div class="col-md-6 col-md-offset-3">-->
   <!--            <h1>Audio Recording Test</h1>-->

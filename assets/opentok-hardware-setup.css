@@ -1,11 +1,11 @@
 .opentok-hardware-setup,
 .opentok-hardware-setup * {
-    margin: 0;
-    padding: 0;
-    border: 0;
-    font-size: 100%;
-    font-family: Arial, Helvetica, sans-serif;
-    vertical-align: baseline;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font-family: Arial, Helvetica, sans-serif;
+  vertical-align: baseline;
 }
 
 .opentok-hardware-setup strong {
@@ -16,12 +16,15 @@
   font-style: italic;
 }
 
+.OT_publisher{
+  width: 300px !important;
+}
+
 .opentok-hardware-setup {
   box-sizing: border-box;
   border: 0;
-  background-color: #333;
   padding: 30px;
-  width: 380px;
+  width: 500px;
   height: 340px;
 }
 
@@ -45,12 +48,16 @@
 }
 
 .opentok-hardware-setup .opentok-hardware-setup-label {
-  color: #ffffff;
+  color: #000000;
   float: left;
   width: 90px;
   padding-right: 10px;
   padding-top: 1px;
   line-height: 31px;
+  font-family: "Work Sans Light";
+  font-size: 21px;
+  letter-spacing: 0;
+  opacity: 1;
 }
 
 .opentok-hardware-setup .opentok-hardware-setup-selector {
@@ -80,7 +87,7 @@
 }
 
 .opentok-hardware-setup .opentok-hardware-setup-selector select::-ms-expand {
-   display: none;
+  display: none;
 }
 
 .opentok-hardware-setup .opentok-hardware-setup-selector select {
@@ -92,13 +99,13 @@
   background-color: transparent;
   background-image: none;
   -webkit-appearance: none;
-     -moz-appearance: none;
-          appearance: none;
+  -moz-appearance: none;
+  appearance: none;
 }
 
-@media screen and (-webkit-min-device-pixel-ratio:0) {
+@media screen and (-webkit-min-device-pixel-ratio: 0) {
   .opentok-hardware-setup .opentok-hardware-setup-selector select {
-    padding-right:18px
+    padding-right: 18px
   }
 }
 
@@ -113,13 +120,15 @@
 }
 
 .opentok-hardware-setup .opentok-hardware-setup-activity-bg {
-  height: 14px;
-  background-image: url('data:image/svg+xml;charset=utf-8,%3Csvg%20viewBox%3D%22-1%200%2010%2014%22%20version%3D%221.1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20x%3D%220%22%20y%3D%220%22%20width%3D%2210px%22%20height%3D%2214px%22%3E%3Cg%3E%3Crect%20x%3D%220%22%20y%3D%220%22%20width%3D%227%22%20height%3D%2214%22%20fill%3D%22%23ffffff%22%20rx%3D%222.415%22%20ry%3D%222.415%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E');
+  height: 5px;
+  background: white;
+  border-radius: 4px;
+  /*background-image: url('data:image/svg+xml;charset=utf-8,%3Csvg%20viewBox%3D%22-1%200%2010%2014%22%20version%3D%221.1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20x%3D%220%22%20y%3D%220%22%20width%3D%2210px%22%20height%3D%2214px%22%3E%3Cg%3E%3Crect%20x%3D%220%22%20y%3D%220%22%20width%3D%227%22%20height%3D%2214%22%20fill%3D%22%23ffffff%22%20rx%3D%222.415%22%20ry%3D%222.415%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E');*/
   /* <svg viewBox="-1 0 10 14" version="1.1" xmlns="http://www.w3.org/2000/svg" x="0" y="0" width="10px" height="14px"><g><rect x="0" y="0" width="7" height="14" fill="#ffffff" rx="2.415" ry="2.415"/></g></svg> */
 }
 
 .opentok-hardware-setup .opentok-hardware-setup-activity-fg {
-  height: 14px;
-  background-image: url('data:image/svg+xml;charset=utf-8,%3Csvg%20viewBox%3D%22-1%200%2010%2014%22%20version%3D%221.1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20x%3D%220%22%20y%3D%220%22%20width%3D%2210px%22%20height%3D%2214px%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22gradient1%22%20x1%3D%2250%25%22%20y1%3D%220%25%22%20x2%3D%2250%25%22%20y2%3D%22100%25%22%3E%3Cstop%20stop-color%3D%22%23acd24c%22%20stop-opacity%3D%221%22%20offset%3D%220%25%22%2F%3E%3Cstop%20stop-color%3D%22%2397d000%22%20stop-opacity%3D%221%22%20offset%3D%22100%25%22%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3Cg%20id%3D%22Layer%25201%22%3E%3Crect%20x%3D%220%22%20y%3D%220%22%20width%3D%227%22%20height%3D%2214%22%20fill%3D%22url(%23gradient1)%22%20rx%3D%222.415%22%20ry%3D%222.415%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E');
-  /* <svg viewBox="-1 0 10 14" version="1.1" xmlns="http://www.w3.org/2000/svg" x="0" y="0" width="10px" height="14px"><defs><linearGradient id="gradient1" x1="50%" y1="0%" x2="50%" y2="100%"><stop stop-color="#acd24c" stop-opacity="1" offset="0%"/><stop stop-color="#97d000" stop-opacity="1" offset="100%"/></linearGradient></defs><g id="Layer%201"><rect x="0" y="0" width="7" height="14" fill="url(#gradient1)" rx="2.415" ry="2.415"/></g></svg> */
+  height: 5px;
+  background: #009D90;
+  /* <svg viewBox="-1 0 10 14" version="1.1" xmlns="http://www.w3.org/2000/svg" x="0" y="0" width="10px" height="14px"><defs><linearGradient id="gradient1" x1="50%" y1="0%" x2="50%" y2="100%"><stop stop-color="#009D90" stop-opacity="1" offset="0%"/><stop stop-color="#009D90" stop-opacity="1" offset="100%"/></linearGradient></defs><g id="Layer%201"><rect x="0" y="0" width="7" height="14" fill="url(#gradient1)" rx="2.415" ry="2.415"/></g></svg> */
 }

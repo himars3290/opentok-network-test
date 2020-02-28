@@ -108,14 +108,14 @@ hr {
   color: #DA3236 !important;
 }
 
-#connectivity_status_container, #quality_status_container {
+#connectivity_status_container, #quality_status_container,#hardware_setup_container, .connectivity_tests {
   border-bottom: 1px solid #D4D4D4;
   padding: 60.5px;
   min-width: 768px;
   width: 100%;
 }
 
-.audio, .video{
+.audio, .video, #hardware-setup{
   width: 100%;
 }
 
@@ -125,4 +125,10 @@ hr {
 
 .graph{
   padding: 1em 5em;
+}
+
+.connectivity-grid{
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  grid-template-rows: auto;
 }
