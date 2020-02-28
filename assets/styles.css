@@ -1,176 +1,105 @@
-.container {
-  position: absolute;
-  top: 0px;
-  right: 0px;
+@font-face {
+  font-family: 'Source Serif Pro Regular';
+  src: url(../assets/fonts/Source_Serif_Pro/SourceSerifPro-Regular.ttf) format('truetype');
 }
 
-.container, .container .OT_subscriber, .container .OT_publisher {
-  overflow: hidden;
+@font-face {
+  font-family: 'Source Serif Pro SemiBold';
+  src: url(../assets/fonts/Source_Serif_Pro/SourceSerifPro-SemiBold.ttf) format('truetype');
 }
 
-.container .OT_subscriber, .container .OT_publisher {
-  float: left;
-  width: 2px !important;
-  height: 2px !important;
-  min-width: 2px !important;
-  max-width: 2px !important;
-  min-height: 2px !important;
-  max-height: 2px !important;
+@font-face {
+  font-family: 'Source Serif Pro Bold';
+  src: url(../assets/fonts/Source_Serif_Pro/SourceSerifPro-Bold.ttf) format('truetype');
 }
 
-body {
-  background: #eee;
-  font-family: "Helvetica Neu", Arial;
-  color: #666;
-  padding: 0;
-  margin: 0;
+@font-face {
+  font-family: 'Work Sans Light';
+  src: url(../assets/fonts/Work_Sans/WorkSans-Light.ttf) format('truetype');
 }
 
-h1 {
-  margin-top: 0;
-  padding-top: 0;
-  border-bottom: 1px solid rgba(0,0,0,0.2);
-  box-shadow: 0px 0px 10px 1px rgba(0,0,0,0.2);
-  display: block;
-  font-weight: 200;
-  padding: 0.6rem;
-  background: -moz-linear-gradient(top, rgba(237,237,237,1) 0%, rgba(246,246,246,1) 53%, rgba(255,255,255,1) 100%);
-  background: -webkit-gradient(left top, left bottom, color-stop(0%, rgba(237,237,237,1)), color-stop(53%, rgba(246,246,246,1)), color-stop(100%, rgba(255,255,255,1)));
-  background: -webkit-linear-gradient(top, rgba(237,237,237,1) 0%, rgba(246,246,246,1) 53%, rgba(255,255,255,1) 100%);
-  background: -o-linear-gradient(top, rgba(237,237,237,1) 0%, rgba(246,246,246,1) 53%, rgba(255,255,255,1) 100%);
-  background: -ms-linear-gradient(top, rgba(237,237,237,1) 0%, rgba(246,246,246,1) 53%, rgba(255,255,255,1) 100%);
-  background: linear-gradient(to bottom, rgba(237,237,237,1) 0%, rgba(246,246,246,1) 53%, rgba(255,255,255,1) 100%);
+@font-face {
+  font-family: 'Work Sans';
+  src: url(../assets/fonts/Work_Sans/WorkSans-Regular.ttf) format('truetype');
 }
 
-h1 small {
-  color: #999;
+@font-face {
+  font-family: 'Work Sans SemiBold';
+  src: url(../assets/fonts/Work_Sans/WorkSans-SemiBold.ttf) format('truetype');
 }
 
-div.prettyBox {
-  box-sizing: border-box;
-  padding: 1rem;
-  display: none;
+@font-face {
+  font-family: 'Work Sans Bold';
+  src: url(../assets/fonts/Work_Sans/WorkSans-Bold.ttf) format('truetype');
+}
 
-  margin: 0 auto;
-  margin-top: 1rem;
-  max-width: 90%;
-  min-width: 60%;
-  width: 600px;
-  background: -moz-linear-gradient(top, rgba(237,237,237,1) 0%, rgba(246,246,246,1) 53%, rgba(255,255,255,1) 100%);
-  background: -webkit-gradient(left top, left bottom, color-stop(0%, rgba(237,237,237,1)), color-stop(53%, rgba(246,246,246,1)), color-stop(100%, rgba(255,255,255,1)));
-  background: -webkit-linear-gradient(top, rgba(237,237,237,1) 0%, rgba(246,246,246,1) 53%, rgba(255,255,255,1) 100%);
-  background: -o-linear-gradient(top, rgba(237,237,237,1) 0%, rgba(246,246,246,1) 53%, rgba(255,255,255,1) 100%);
-  background: -ms-linear-gradient(top, rgba(237,237,237,1) 0%, rgba(246,246,246,1) 53%, rgba(255,255,255,1) 100%);
-  background: linear-gradient(to bottom, rgba(237,237,237,1) 0%, rgba(246,246,246,1) 53%, rgba(255,255,255,1) 100%);
-  border: 1px solid rgba(0,0,0,0.2);
-  box-shadow: 0px 0px 10px 1px rgba(0,0,0,0.2);
+html, body {
+  background: #F6F6F6;
+  font-family: "Work Sans";
+  color: #000000;
+  height: 100%;
+  width: 100%;
+}
+
+.start-test-container, .results-container {
+  height: 100%;
+  width: 100%;
+}
+
+.page-title {
   text-align: center;
+  font-family: "Work Sans Light";
+  font-size: 21px;
+  letter-spacing: 0;
+  color: #009D90;
+  opacity: 1;
 }
 
-div.prettyBox h2 {
-  margin-top: 0;
+.page-subtitle {
+  text-align: center;
+  font-family: "Source Serif Pro";
+  font-size: 48px;
+  letter-spacing: 0;
+  color: #000000;
+  opacity: 1;
+  padding: 30px 20%;
+}
+
+.start-test-div {
+  width: 914px;
+  height: 176px;
+  background: white;
+  border-radius: 6px;
+  opacity: 1;
+  margin: 0 5%;
+}
+
+button {
+  width: 200px;
+  height: 60px;
+  background: #009D90;
+  border-radius: 4px;
+  opacity: 1;
+  border: none;
+  font-size: 16px;
+  font-family: "Work Sans";
+  letter-spacing: 0;
+  color: #FFFFFF;
+}
+
+.options label {
+  text-align: left;
   font-size: 18px;
+  font-family: "Work Sans";
+  letter-spacing: 0;
+  color: #000000;
+  opacity: 1;
 }
 
-div.prettyBox p {
-  color: #999;
-  font-weight: 200;
-  font-size: 16px;
-  margin: 0;
-  margin-bottom: 8px;
-}
-
-div.prettyBox .results {
-  display: none;
-}
-
-h3 {
-  font-size: 16px;
-  margin-bottom: 6px;
-}
-
-div.prettyBox .results p {
-  color: #333;
-  font-weight: 200;
-  font-size: 14px;
-  margin: 0;
-}
-
-div.prettyBox .results :last-child {
-  margin-bottom: 1rem;
-}
-
-div.prettyBox img {
-  width: 50px;
-}
-
-#precall {
-  display: block
-}
-
-#precall .options span {
-  margin-left: 24px;
-  font-size: 14px;
-}
-
-#precall .options {
-  margin: 20px;
-}
-
-#precall button {
-  font-family: "Helvetica Neu", Arial;
-  font-size: 12px;
-}
-
-#quality_status_container {
-  display: none;
-  flex-direction: column;
-  align-items: center;
-}
-
-#stop_test {
-  margin-top: 8px;
-  display: none;
-}
-#quality_status_container > div {
-  display: flex;
-  justify-content: center;
-}
-
-#quality_header {
-  flex-direction: column;
-  align-items: center;
-}
-
-#quality_status_container #audio, #quality_status_container #video {
-  width: 50%;
-}
-
-.graph {
-  height: 240px;
-}
-
-#quality_status_container .results {
-  display: none;
-  min-height: 96px
-}
-
-#video-unsupported-reason {
-  display: none;
-}
-
-@media screen and (max-width: 380px) {
-  h1 {
-    font-size: 24px;
-    padding: 0.5rem;
-  }
-  h2 {
-    font-size: 18px;
-  }
-  div.prettyBox p {
-    font-size: 20px;
-  }
-  div.prettyBox {
-    padding: 1rem;
-  }
+hr{
+  width: 88px;
+  height: 2px;
+  background: #F8C73E;
+  border-radius: 1px;
+  opacity: 1;
 }

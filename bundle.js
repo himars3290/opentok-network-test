@@ -9552,15 +9552,14 @@ var audioOnly = void 0;
 
 var precallDiv = document.getElementById('precall');
 precallDiv.querySelector('#precall button').addEventListener('click', function () {
-  document.getElementById('connectivity_status_container').style.display = 'block';
-  precallDiv.style.display = 'none';
+  $(".results-container").removeClass('d-none').addClass('d-flex');
+  $(".start-test-container").addClass('d-none').removeClass('d-flex');
   startTest();
 });
 
 function startTest() {
-  audioOnly = precallDiv.querySelector('#precall input').checked;
-  var timeoutSelect = precallDiv.querySelector('select');
-  var timeout = timeoutSelect.options[timeoutSelect.selectedIndex].text * 1000;
+  audioOnly = precallDiv.querySelector('#precall input#audio').checked;
+  var timeout = 5 * 1000;
   var options = {
     audioOnly: audioOnly,
     timeout: timeout
@@ -12486,7 +12485,7 @@ var handleAction = exports.handleAction = function () {
             actionButton.disabled = true;
             recorder.start();
             _context2.next = 8;
-            return sleep(3000);
+            return sleep(10000);
 
           case 8:
             _context2.next = 10;
@@ -12497,7 +12496,7 @@ var handleAction = exports.handleAction = function () {
 
             audio.play();
             _context2.next = 14;
-            return sleep(3000);
+            return sleep(10000);
 
           case 14:
             actionButton.disabled = false;
@@ -12524,8 +12523,8 @@ var handleAction = exports.handleAction = function () {
 
 module.exports = {
   apiKey: '46116222', // Add your own OpenTok API key here. See the README in this directory.
-  sessionId: '2_MX40NjExNjIyMn5-MTU4MjM4MTE0NTk0Mn5xUlFkTzVLYmtUalpwSmx6d05xdU11TlN-fg', // Add your own session ID here
-  token: 'T1==cGFydG5lcl9pZD00NjExNjIyMiZzaWc9OWFmMjFlMTViMzYyN2IwODA5MWM5MGE3N2ZkZjRhYWJjYjViYTY4NDpzZXNzaW9uX2lkPTJfTVg0ME5qRXhOakl5TW41LU1UVTRNak00TVRFME5UazBNbjV4VWxGa1R6VkxZbXRVYWxwd1NteDZkMDV4ZFUxMVRsTi1mZyZjcmVhdGVfdGltZT0xNTgyMzgxMTQ1JnJvbGU9bW9kZXJhdG9yJm5vbmNlPTE1ODIzODExNDUuOTU4NjEwMDU3NTYzNTE=' // Add your own token here
+  sessionId: '2_MX40NjExNjIyMn5-MTU4MjU1MDM1NDIzNX41ditBZTNhNmRySFBtRVhiNjJ5L0JQQU5-fg', // Add your own session ID here
+  token: 'T1==cGFydG5lcl9pZD00NjExNjIyMiZzaWc9M2E0ZTViMTVkNjU5ZWE4YmIyYjNiODIwNmUxZWNiMWQ3MGIzZDI4ZTpzZXNzaW9uX2lkPTJfTVg0ME5qRXhOakl5TW41LU1UVTRNalUxTURNMU5ESXpOWDQxZGl0QlpUTmhObVJ5U0ZCdFJWaGlOako1TDBKUVFVNS1mZyZjcmVhdGVfdGltZT0xNTgyNTUwMzg3Jm5vbmNlPTAuODgzNDMzNDQxNjIxODcwOCZyb2xlPXB1Ymxpc2hlciZleHBpcmVfdGltZT0xNTg1MTM4Nzg1JmNvbm5lY3Rpb25fZGF0YT10ZXN0aW5nJmluaXRpYWxfbGF5b3V0X2NsYXNzX2xpc3Q9' // Add your own token here
 };
 
 /***/ })

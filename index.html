@@ -1,171 +1,178 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <script type="text/javascript" src="https://static.opentok.com/v2/js/opentok.min.js"></script>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="assets/styles.css"  rel="stylesheet">
-    <link href="assets/precallResults.css"  rel="stylesheet">
-    <link href="assets/opentok-hardware-setup.css"  rel="stylesheet">
-    <link href="assets/bootstrap.min.css"  rel="stylesheet">
-  </head>
-  <body>
-    <h1>OpenTok <small>Network test</small></h1>
-    <div id="precall" class="prettyBox">
-      <div class="options">
-        Options:
-        <span>
-          <input id="checkBox" type="checkbox"> <label>Audio-only</label>
-        </span>
-        <span>
-          Maximum duration:
-          <select>
-            <option>30</option>
-            <option>25</option>
-            <option>20</option>
-            <option>15</option>
-            <option>10</option>
-            <option>5</option>
-          </select>
-        </span>
-      </div>
-      <button>Start test</button>
-    </div>
+<head>
+  <script type="text/javascript" src="https://static.opentok.com/v2/js/opentok.min.js"></script>
+  <script type="text/javascript" src="src/js/jquery-3.4.1.min.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="assets/precallResults.css" rel="stylesheet">
+  <link href="assets/opentok-hardware-setup.css" rel="stylesheet">
+  <link href="assets/bootstrap.min.css" rel="stylesheet">
+  <link href="assets/styles.css" rel="stylesheet">
 
-    <div id="connectivity_status_container" class="prettyBox">
-      <h2>Testing connectivity</h2>
+</head>
+<body>
+<div class="start-test-container d-flex justify-content-center align-items-center">
+  <div id="precall d-flex flex-column">
+    <span class="page-title d-flex justify-content-center">
+      KUDO TEST
+    </span>
+    <div class="page-subtitle">
+      Test your Connectivity and Audio/Video Quality
+    </div>
+    <hr style="margin-bottom:80px">
+    <div class="start-test-div d-flex align-items-center justify-content-center">
+      <div class="options">
+        <input id="audio-video" type="checkbox" checked > <label class="pr-5">Audio/Video</label>
+        <input id="audio" type="checkbox" > <label class="pr-5">Audio only</label>
+
+      </div>
+      <button>Start test <img src="assets/icon_arrow.svg" alt=""></button>
+    </div>
+  </div>
+</div>
+<div class="d-none results-container justify-content-center align-items-center">
+  <div id="connectivity_status_container" class="prettyBox">
+    <h2>Testing connectivity</h2>
+    <p>Test in progress.</p>
+    <img src="assets/spinner.gif">
+  </div>
+  <div id="quality_status_container" class="prettyBox">
+    <div id="quality_header">
+      <h2>Testing quality</h2>
       <p>Test in progress.</p>
       <img src="assets/spinner.gif">
+      <button id="stop_test">Stop test</button>
     </div>
-    <div id="quality_status_container" class="prettyBox">
-      <div id="quality_header">
-        <h2>Testing quality</h2>
-        <p>Test in progress.</p>
-        <img src="assets/spinner.gif">
-        <button id="stop_test">Stop test</button>
+    <div>
+      <div id="audio">
+        <h3>Audio</h3>
+        <div>
+          <div class="results">
+            <p>Supported:
+              <span id="audio-supported"></span>
+            </p>
+            <p>Quality:
+              <span id="audio-mos"></span>
+            </p>
+            <p>Bitrate:
+              <span id="audio-bitrate"></span>
+            </p>
+            <p>Packet loss ratio:
+              <span id="audio-plr"></span>
+            </p>
+          </div>
+          <div id="audioGraph" class="graph"></div>
+        </div>
       </div>
-      <div>
-        <div id="audio">
-          <h3>Audio</h3>
-          <div>
-            <div class="results">
-              <p>Supported:
-                <span id="audio-supported"></span>
-              </p>
-              <p>Quality:
-                <span id="audio-mos"></span>
-              </p>
-              <p>Bitrate:
-                <span id="audio-bitrate"></span>
-              </p>
-              <p>Packet loss ratio:
-                <span id="audio-plr"></span>
-              </p>
-            </div>
-            <div id="audioGraph" class="graph"></div>
+      <div id="video">
+        <h3>Video</h3>
+        <div>
+          <div class="results">
+            <p>Supported:
+              <span id="video-supported"></span>
+            <p id="video-unsupported-reason">Reason:
+              <span></span>
+            </p>
+            <p>Quality:
+              <span id="video-mos"></span>
+            </p>
+            <p>Bitrate:
+              <span id="video-bitrate"></span>
+            </p>
+            <p>Packet loss ratio:
+              <span id="video-plr"></span>
+            </p>
+            <p>Recommended resolution:
+              <span id="video-recommendedResolution"></span>
+            </p>
+            <p>Recommended frame rate:
+              <span id="video-recommendedFrameRate"></span>
+            </p>
           </div>
+          <div id="videoGraph" class="graph"></div>
         </div>
-        <div id="video">
-          <h3>Video</h3>
-          <div>
-            <div class="results">
-              <p>Supported:
-                <span id="video-supported"></span>
-              <p id="video-unsupported-reason">Reason:
-                <span></span>
-              </p>
-              <p>Quality:
-                <span id="video-mos"></span>
-              </p>
-              <p>Bitrate:
-                <span id="video-bitrate"></span>
-              </p>
-              <p>Packet loss ratio:
-                <span id="video-plr"></span>
-              </p>
-              <p>Recommended resolution:
-                <span id="video-recommendedResolution"></span>
-              </p>
-              <p>Recommended frame rate:
-                <span id="video-recommendedFrameRate"></span>
-              </p>
-            </div>
-            <div id="videoGraph" class="graph"></div>
-          </div>
-        </div>
+      </div>
     </div>
-    </div>
-    <div id="hardware-setup">
+  </div>
+  <div id="hardware-setup">
 
+  </div>
+  <div id="connectivity_tests" class="connectivity_tests" style="display: none">
+    <div class="row margin_top_30">
+      <div class="col-md-3"></div>
+      <div class="col-md-6 precall_panel precall_panel_header">
+        <div class="col-md-12">Connectivity to OpenTok Servers</div>
+      </div>
+      <div class="col-md-3"></div>
     </div>
-    <div id="connectivity_tests" class="connectivity_tests" style="display: none">
-      <div class="row margin_top_30">
-        <div class="col-md-3"></div>
-        <div class="col-md-6 precall_panel precall_panel_header">
-          <div class="col-md-12">Connectivity to OpenTok Servers</div>
+    <div class="row">
+      <div class="col-md-3"></div>
+      <div class="col-md-6 precall_panel api_status_light" id="api_server_test">
+        <div class="col-md-3 connectivity_test_status connectivity_test_success" id="api_server_status">
+          <img id="api_img" src="https://tokbox.com/developer/tools/precall/images/server-on.png">
+          <div>API Server</div>
         </div>
-        <div class="col-md-3"></div>
+        <div class="col-md-9 section_details">
+          <div id="api_section_name" class="section_name section_name_success">OpenTok API server - Connected</div>
+          <div class="subtext">Connects to OpenTok and used for session initialization and
+            signaling.
+          </div>
+          <div id="api_results">Successfully connected to the OpenTok API server.</div>
+        </div>
       </div>
-      <div class="row">
-        <div class="col-md-3"></div>
-        <div class="col-md-6 precall_panel api_status_light" id="api_server_test">
-          <div class="col-md-3 connectivity_test_status connectivity_test_success" id="api_server_status">
-            <img id="api_img" src="https://tokbox.com/developer/tools/precall/images/server-on.png">
-            <div>API Server</div>
-          </div>
-          <div class="col-md-9 section_details">
-            <div id="api_section_name" class="section_name section_name_success">OpenTok API server - Connected</div>
-            <div class="subtext">Connects to OpenTok and used for session initialization and
-              signaling.</div>
-            <div id="api_results">Successfully connected to the OpenTok API server.</div>
-          </div>
+      <div class="col-md-3"></div>
+    </div>
+    <div class="row">
+      <div class="col-md-3"></div>
+      <div class="col-md-6 precall_panel api_status_light" id="messaging_socket_test">
+        <div class="col-md-3 connectivity_test_status connectivity_test_success" id="messaging_server_status">
+          <img id="messaging_img" src="https://tokbox.com/developer/tools/precall/images/server-on.png">
+          <div>Messaging WebSocket</div>
         </div>
-        <div class="col-md-3"></div>
+        <div class="col-md-9 section_details">
+          <div id="messaging_section_name" class="section_name section_name_success">OpenTok Messaging WebSocket -
+            Connected
+          </div>
+          <div class="subtext">Clients send and receive OpenTok session-related messages using this WebSocket.</div>
+          <div id="messaging_results">Successfully connected to the OpenTok Messaging WebSocket.</div>
+        </div>
       </div>
-      <div class="row">
-        <div class="col-md-3"></div>
-        <div class="col-md-6 precall_panel api_status_light" id="messaging_socket_test">
-          <div class="col-md-3 connectivity_test_status connectivity_test_success" id="messaging_server_status">
-            <img id="messaging_img" src="https://tokbox.com/developer/tools/precall/images/server-on.png">
-            <div>Messaging WebSocket</div>
-          </div>
-          <div class="col-md-9 section_details">
-            <div id="messaging_section_name" class="section_name section_name_success">OpenTok Messaging WebSocket - Connected</div>
-            <div class="subtext">Clients send and receive OpenTok session-related messages using this WebSocket.</div>
-            <div id="messaging_results">Successfully connected to the OpenTok Messaging WebSocket.</div>
-          </div>
+      <div class="col-md-3"></div>
+    </div>
+    <div class="row">
+      <div class="col-md-3"></div>
+      <div class="col-md-6 precall_panel api_status_light" id="media_server_test">
+        <div class="col-md-3 connectivity_test_status connectivity_test_success" id="media_server_status">
+          <img id="media_img" src="https://tokbox.com/developer/tools/precall/images/server-on.png">
+          <div>Media Server</div>
         </div>
-        <div class="col-md-3"></div>
+        <div class="col-md-9 section_details">
+          <div id="media_section_name" class="section_name section_name_success">OpenTok Media Server - Connected</div>
+          <div class="subtext">Clients send audio and video to our media server for intelligent
+            and efficient routing to their destination.
+          </div>
+          <div id="media_results">Successfully connected to the OpenTok Media Server.</div>
+        </div>
       </div>
-      <div class="row">
-        <div class="col-md-3"></div>
-        <div class="col-md-6 precall_panel api_status_light" id="media_server_test">
-          <div class="col-md-3 connectivity_test_status connectivity_test_success" id="media_server_status">
-            <img id="media_img" src="https://tokbox.com/developer/tools/precall/images/server-on.png">
-            <div>Media Server</div>
-          </div>
-          <div class="col-md-9 section_details">
-            <div id="media_section_name" class="section_name section_name_success">OpenTok Media Server - Connected</div>
-            <div class="subtext">Clients send audio and video to our media server for intelligent
-              and efficient routing to their destination.</div>
-            <div id="media_results">Successfully connected to the OpenTok Media Server.</div>
-          </div>
-        </div>
-        <div class="col-md-3"></div>
-      </div>
-      <div class="row">
-        <div class="col-md-6 col-md-offset-3">
-          <h1>Audio Recording Test</h1>
-          <p>Talk for 3 seconds, then you will hear your recording played back</p>
-          <button id="action">Start recording...</button>
-        </div>
+      <div class="col-md-3"></div>
+    </div>
+    <div class="row">
+      <div class="col-md-6 col-md-offset-3">
+        <h1>Audio Recording Test</h1>
+        <p>Talk for 10 seconds, then you will hear your recording played back</p>
+        <button id="action" type="button">Start recording...</button>
       </div>
     </div>
-    <script type="text/javascript" src="bundle.js"></script>
-  </body>
+  </div>
+</div>
+
+
+<script type="text/javascript" src="bundle.js"></script>
+</body>
 </html>
 
 <style>
-  #hardware-setup{
+  #hardware-setup {
     display: flex;
     flex-direction: column;
     align-items: center;

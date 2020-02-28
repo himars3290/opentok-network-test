@@ -11,15 +11,14 @@ let audioOnly;
 
 const precallDiv = document.getElementById('precall');
 precallDiv.querySelector('#precall button').addEventListener('click', function () {
-  document.getElementById('connectivity_status_container').style.display = 'block';
-  precallDiv.style.display = 'none';
+  $(".results-container").removeClass('d-none').addClass('d-flex');
+  $(".start-test-container").addClass('d-none').removeClass('d-flex');
   startTest();
 })
 
 function startTest() {
-  audioOnly = precallDiv.querySelector('#precall input').checked;
-  var timeoutSelect = precallDiv.querySelector('select');
-  var timeout = timeoutSelect.options[timeoutSelect.selectedIndex].text * 1000;
+  audioOnly = precallDiv.querySelector('#precall input#audio').checked;
+  var timeout = 5 * 1000;
   var options = {
     audioOnly: audioOnly,
     timeout: timeout
