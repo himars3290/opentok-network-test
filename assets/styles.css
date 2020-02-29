@@ -87,7 +87,7 @@ button {
   color: #FFFFFF;
 }
 
-.options label {
+.options span {
   text-align: left;
   font-size: 18px;
   font-family: "Work Sans";

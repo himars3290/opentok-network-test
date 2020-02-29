@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <script type="text/javascript" src="https://static.opentok.com/v2/js/opentok.min.js"></script>
+  <script type="text/javascript" src="src/js/opentok.min.js"></script>
   <script type="text/javascript" src="src/js/jquery-3.4.1.min.js"></script>
+  <link rel="stylesheet" href="assets/materialize.min.css">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link href="assets/precallResults.css" rel="stylesheet">
   <link href="assets/opentok-hardware-setup.css" rel="stylesheet">
@@ -22,8 +23,16 @@
     <hr style="margin-bottom:80px">
     <div class="start-test-div d-flex align-items-center justify-content-center">
       <div class="options">
-        <input id="audio-video" type="checkbox" checked> <label class="pr-5">Audio/Video</label>
-        <input id="audio" type="checkbox"> <label class="pr-5">Audio only</label>
+        <label>
+          <input id="audio-video" name="netTest" type="radio" checked/>
+          <span class="pr-5">Audio/Video</span>
+        </label>
+        <label>
+          <input id="audio" type="radio" name="netTest"/>
+          <span class="pr-5">Audio</span>
+        </label>
+<!--        <input id="audio-video" name="netTest" type="radio" checked> <label class="pr-5">Audio/Video</label>-->
+<!--        <input id="audio" type="radio" name="netTest"> <label class="pr-5">Audio only</label>-->
 
       </div>
       <button>Start test <img src="assets/icon_arrow.svg" alt=""></button>
