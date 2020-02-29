@@ -9598,9 +9598,16 @@ function testQuality() {
         document.querySelector('#hardware-setup').innerHTML = '<strong>Error getting ' + 'devices</strong>: ' + error.message;
         return;
       }
-      document.getElementById("action").addEventListener("click", function () {
-        Recorder.handleAction();
-        document.getElementById("action").innerHTML("Recording...");
+      document.getElementById("recordButton").addEventListener("click", function () {
+        $("#stopButton").removeAttr("disabled");
+        $("#recordButton").attr('disabled', 'disabled');
+        Recorder.toggleRecording();
+      });
+
+      document.getElementById("stopButton").addEventListener("click", function () {
+        $("#recordButton").removeAttr("disabled");
+        $("#stopButton").attr('disabled', 'disabled');
+        Recorder.toggleRecording();
       });
     });
   }).catch(function (error) {
@@ -11751,13 +11758,13 @@ function init(audioOnly) {
 function checkToDisplayStopButton() {
   if (!stopBtnTimeout) {
     stopBtnTimeout = window.setTimeout(function () {
-      stopTestBtn.style.display = 'block';
+      // stopTestBtn.style.display = 'block';
     }, 4000);
   }
 }
 
 function hideStopButton() {
-  stopTestBtn.style.display = 'none';
+  // stopTestBtn.style.display = 'none';
 }
 
 function displayTestConnectivityResults(results) {
@@ -11873,6 +11880,7 @@ function displayTestQualityResults(error, results) {
   }
   $(".video").removeClass('d-none');
   $(".audio").removeClass('d-none');
+  $("#hardware_setup_container").removeClass('d-none').addClass('d-flex');
   statusEl.textContent = 'Test complete.';
   var resultsEl = statusContainerEl.querySelector('#audio .results');
   resultsEl.style.display = 'block';
@@ -12410,118 +12418,31 @@ function createOpentokHardwareSetupComponent(targetElement, options, callback) {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-
-function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
-
-var recordAudio = function recordAudio() {
-  return new Promise(function () {
-    var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(resolve) {
-      var stream, mediaRecorder, audioChunks, start, stop;
-      return regeneratorRuntime.wrap(function _callee$(_context) {
-        while (1) {
-          switch (_context.prev = _context.next) {
-            case 0:
-              _context.next = 2;
-              return navigator.mediaDevices.getUserMedia({ audio: true });
-
-            case 2:
-              stream = _context.sent;
-              mediaRecorder = new MediaRecorder(stream);
-              audioChunks = [];
-
-
-              mediaRecorder.addEventListener("dataavailable", function (event) {
-                audioChunks.push(event.data);
-              });
-
-              start = function start() {
-                return mediaRecorder.start();
-              };
-
-              stop = function stop() {
-                return new Promise(function (resolve) {
-                  mediaRecorder.addEventListener("stop", function () {
-                    var audioBlob = new Blob(audioChunks);
-                    var audioUrl = URL.createObjectURL(audioBlob);
-                    console.log(audioUrl);
-                    var audio = new Audio(audioUrl);
-                    var play = function play() {
-                      return audio.play();
-                    };
-                    resolve({ audioBlob: audioBlob, audioUrl: audioUrl, play: play });
-                  });
-
-                  mediaRecorder.stop();
-                });
-              };
-
-              resolve({ start: start, stop: stop });
-
-            case 9:
-            case "end":
-              return _context.stop();
-          }
-        }
-      }, _callee, undefined);
-    }));
-
-    return function (_x) {
-      return _ref.apply(this, arguments);
-    };
-  }());
-};
-
-var sleep = function sleep(time) {
-  return new Promise(function (resolve) {
-    return setTimeout(resolve, time);
-  });
-};
-
-var handleAction = exports.handleAction = function () {
-  var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2() {
-    var recorder, actionButton, audio;
-    return regeneratorRuntime.wrap(function _callee2$(_context2) {
-      while (1) {
-        switch (_context2.prev = _context2.next) {
-          case 0:
-            _context2.next = 2;
-            return recordAudio();
-
-          case 2:
-            recorder = _context2.sent;
-            actionButton = document.getElementById('action');
-
-            actionButton.disabled = true;
-            recorder.start();
-            _context2.next = 8;
-            return sleep(10000);
-
-          case 8:
-            _context2.next = 10;
-            return recorder.stop();
-
-          case 10:
-            audio = _context2.sent;
-
-            audio.play();
-            _context2.next = 14;
-            return sleep(10000);
-
-          case 14:
-            actionButton.disabled = false;
-
-          case 15:
-          case "end":
-            return _context2.stop();
-        }
-      }
-    }, _callee2, undefined);
-  }));
-
-  return function handleAction() {
-    return _ref2.apply(this, arguments);
-  };
-}();
+exports.toggleRecording = toggleRecording;
+var recorder, gumStream;
+function toggleRecording() {
+  console.log("yeha ayo");
+  if (recorder && recorder.state == "recording") {
+    recorder.stop();
+    gumStream.getAudioTracks()[0].stop();
+  } else {
+    navigator.mediaDevices.getUserMedia({
+      audio: true
+    }).then(function (stream) {
+      gumStream = stream;
+      recorder = new MediaRecorder(stream);
+      recorder.ondataavailable = function (e) {
+        var url = URL.createObjectURL(e.data);
+        var preview = document.createElement('audio');
+        preview.controls = true;
+        preview.src = url;
+        preview.classList.add("pb-3");
+        document.querySelector("#recorder_container").appendChild(preview);
+      };
+      recorder.start();
+    });
+  }
+}
 
 /***/ }),
 /* 341 */

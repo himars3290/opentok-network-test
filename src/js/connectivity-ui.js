@@ -59,13 +59,13 @@ export function init(audioOnly) {
 export function checkToDisplayStopButton() {
   if (!stopBtnTimeout) {
     stopBtnTimeout = window.setTimeout(function () {
-      stopTestBtn.style.display = 'block';
+      // stopTestBtn.style.display = 'block';
     }, 4000);
   }
 }
 
 export function hideStopButton() {
-  stopTestBtn.style.display = 'none';
+  // stopTestBtn.style.display = 'none';
 }
 
 export function displayTestConnectivityResults(results) {
@@ -181,6 +181,7 @@ export function displayTestQualityResults(error, results) {
   }
   $(".video").removeClass('d-none');
   $(".audio").removeClass('d-none');
+  $("#hardware_setup_container").removeClass('d-none').addClass('d-flex');
   statusEl.textContent = 'Test complete.';
   let resultsEl = statusContainerEl.querySelector('#audio .results');
   resultsEl.style.display = 'block';
