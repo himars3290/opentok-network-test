@@ -376,8 +376,10 @@ export function createOpentokHardwareSetupComponent(targetElement, options, call
   }
 
   camSelector = createElement('select', {}, '');
+  camSelector.classList.add('browser-default');
   camPreview = createElement('div', { className: 'opentok-hardware-setup-preview' }, '');
   micSelector = createElement('select', {}, '');
+  micSelector.classList.add('browser-default');
   micPreview = createElement('div', { className: 'opentok-hardware-setup-preview' }, '');
 
   container = createElement('div', {
@@ -450,7 +452,6 @@ export function createOpentokHardwareSetupComponent(targetElement, options, call
         }
 
         removeClass(container, 'opentok-hardware-setup-loading');
-
         container.appendChild(
           createElement('div', { className: 'opentok-hardware-setup-camera' }, [
             createElement('div', { className: 'opentok-hardware-setup-label' }, 'Camera:'),

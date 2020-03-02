@@ -11778,6 +11778,7 @@ function displayTestConnectivityResults(results) {
     statusMessageEl.classList.remove("error");
     statusText = 'Connected';
     statusIconEl.src = 'assets/icon_pass.svg';
+    document.getElementById("quality_status_container").scrollIntoView();
   } else {
     statusMessageEl.classList.add("error");
     statusText = convertFailedTestsToString(results.failedTests);
@@ -12309,8 +12310,10 @@ function createOpentokHardwareSetupComponent(targetElement, options, callback) {
   }
 
   camSelector = createElement('select', {}, '');
+  camSelector.classList.add('browser-default');
   camPreview = createElement('div', { className: 'opentok-hardware-setup-preview' }, '');
   micSelector = createElement('select', {}, '');
+  micSelector.classList.add('browser-default');
   micPreview = createElement('div', { className: 'opentok-hardware-setup-preview' }, '');
 
   container = createElement('div', {
@@ -12385,7 +12388,6 @@ function createOpentokHardwareSetupComponent(targetElement, options, callback) {
         }
 
         removeClass(container, 'opentok-hardware-setup-loading');
-
         container.appendChild(createElement('div', { className: 'opentok-hardware-setup-camera' }, [createElement('div', { className: 'opentok-hardware-setup-label' }, 'Camera:'), createElement('div', { className: 'opentok-hardware-setup-selector' }, camSelector), camPreview]));
 
         container.appendChild(createElement('div', { className: 'opentok-hardware-setup-mic' }, [createElement('div', { className: 'opentok-hardware-setup-label' }, 'Mic:'), createElement('div', { className: 'opentok-hardware-setup-selector' }, micSelector), micPreview]));

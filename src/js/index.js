@@ -18,7 +18,7 @@ precallDiv.querySelector('#precall button').addEventListener('click', function (
 
 function startTest() {
   audioOnly = precallDiv.querySelector('#precall input#audio').checked;
-  var timeout = 5 * 1000;
+  var timeout = 30 * 1000;
   var options = {
     audioOnly: audioOnly,
     timeout: timeout

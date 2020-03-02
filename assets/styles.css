@@ -49,7 +49,7 @@ html, body {
 .title {
   text-align: center;
   font-family: "Work Sans Light";
-  font-size: 21px;
+  font-size: 16px;
   letter-spacing: 0;
   color: #009D90;
   opacity: 1;
@@ -58,7 +58,7 @@ html, body {
 .page-subtitle {
   text-align: center;
   font-family: "Source Serif Pro";
-  font-size: 48px;
+  font-size: 40px;
   letter-spacing: 0;
   color: #000000;
   opacity: 1;
@@ -104,13 +104,17 @@ hr {
   opacity: 1;
 }
 
+select{
+  background-image: none !important;
+}
+
 .error {
   color: #DA3236 !important;
 }
 
 #connectivity_status_container, #quality_status_container, #hardware_setup_container, .connectivity_tests {
   border-bottom: 1px solid #D4D4D4;
-  padding: 60.5px;
+  padding: 0 30.5px 30.5px 30.5px;
   min-width: 768px;
   width: 100%;
 }

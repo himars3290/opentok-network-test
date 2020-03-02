@@ -79,6 +79,7 @@ export function displayTestConnectivityResults(results) {
     statusMessageEl.classList.remove("error");
     statusText = 'Connected';
     statusIconEl.src = 'assets/icon_pass.svg';
+    document.getElementById("quality_status_container").scrollIntoView();
   } else {
     statusMessageEl.classList.add("error");
     statusText = convertFailedTestsToString(results.failedTests);
