@@ -9557,6 +9557,11 @@ precallDiv.querySelector('#precall button').addEventListener('click', function (
   startTest();
 });
 
+$("#rerunTest").click(function () {
+  // location.reload();
+  window.open('mailto:test@example.com?subject=subject&body=body');
+});
+
 function startTest() {
   audioOnly = precallDiv.querySelector('#precall input#audio').checked;
   var timeout = 5 * 1000;
@@ -11808,7 +11813,7 @@ function setData(section, flag) {
 
 function displayResults() {
   var statusContainer = document.getElementById('connectivity_tests');
-
+  var btnContainer = document.getElementById('btn-container');
   if (failureTypes.indexOf('OpenTok.js') > -1) {
     setData('api', false);
     setData('messaging', false);
@@ -11820,6 +11825,7 @@ function displayResults() {
     // setData('log', failureTypes.indexOf('logging') <= -1);
   }
   statusContainer.style.display = 'block';
+  btnContainer.style.display = 'block';
 }
 
 function convertFailedTestsToString(failedTests) {

@@ -187,7 +187,7 @@
 }
 
 .section_name {
-  font-family: "Work Sans Light";
+  font-family: "Avenir Regular";
   font-size: 21px;
   letter-spacing: 0;
   color: #009D90;
@@ -309,7 +309,7 @@
 }
 
 .connectivity_test_success {
-  min-width: 200px;
+  min-width: 250px;
   width: 250px;
   background-color: #009D90;
 }
@@ -337,7 +337,7 @@
 }
 
 #api_results, #routed_results, #messaging_results, #logging_results,#media_results {
-  font-family: "Work Sans Light";
+  font-family: "Avenir Regular";
   font-size: 16px;
   letter-spacing: 0;
   color: #000000;
@@ -509,7 +509,7 @@
 }
 
 .subtext {
-  font-family: "Work Sans Light";
+  font-family: "Avenir Regular";
   font-size: 18px;
   letter-spacing: 0;
   color: #000000;

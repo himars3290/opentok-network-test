@@ -109,7 +109,7 @@ function setData(section, flag) {
 
 export function displayResults() {
   const statusContainer = document.getElementById('connectivity_tests');
-
+  const btnContainer = document.getElementById('btn-container');
   if(failureTypes.indexOf('OpenTok.js') > -1){
     setData('api', false);
     setData('messaging', false);
@@ -121,6 +121,7 @@ export function displayResults() {
     // setData('log', failureTypes.indexOf('logging') <= -1);
   }
   statusContainer.style.display = 'block';
+  btnContainer.style.display = 'block';
 }
 
 function convertFailedTestsToString(failedTests) {

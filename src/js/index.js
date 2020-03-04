@@ -16,9 +16,17 @@ precallDiv.querySelector('#precall button').addEventListener('click', function (
   startTest();
 })
 
+$("#rerunTest").click(function () {
+  // location.reload();
+  window.open('mailto:test@example.com?subject=subject&body=body');
+
+});
+
+
+
 function startTest() {
   audioOnly = precallDiv.querySelector('#precall input#audio').checked;
-  var timeout = 30 * 1000;
+  var timeout = 5 * 1000;
   var options = {
     audioOnly: audioOnly,
     timeout: timeout

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <script type="text/javascript" src="https://static.opentok.com/v2/js/opentok.min.js"></script>
+  <script type="text/javascript" src="assets/js/opentok.min.js"></script>
   <script type="text/javascript" src="assets/js/jquery-3.4.1.min.js"></script>
   <link rel="stylesheet" href="assets/materialize.min.css">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -31,8 +31,8 @@
           <input id="audio" type="radio" name="netTest"/>
           <span class="pr-5">Audio</span>
         </label>
-<!--        <input id="audio-video" name="netTest" type="radio" checked> <label class="pr-5">Audio/Video</label>-->
-<!--        <input id="audio" type="radio" name="netTest"> <label class="pr-5">Audio only</label>-->
+        <!--        <input id="audio-video" name="netTest" type="radio" checked> <label class="pr-5">Audio/Video</label>-->
+        <!--        <input id="audio" type="radio" name="netTest"> <label class="pr-5">Audio only</label>-->
 
       </div>
       <button>Start test <img src="assets/icon_arrow.svg" alt=""></button>
@@ -57,7 +57,7 @@
     </div>
     <div class="d-flex" style="justify-content: space-evenly">
       <div class="audio" id="audio">
-        <div class="page-subtitle">Audio</div>
+        <div class="page-subtitle" style="font-size: 30px; padding: 0">Audio</div>
         <hr style="margin-bottom:30px">
 
         <div>
@@ -79,14 +79,12 @@
         </div>
       </div>
       <div class="video" id="video">
-        <div class="page-subtitle">Video</div>
+        <div class="page-subtitle" style="font-size: 30px; padding: 0">Video</div>
         <hr style="margin-bottom:30px">
 
         <div class="results">
           <p class="title" style="color: #000000">Supported:
             <span class="title" id="video-supported"></span>
-          <p class="title" style="color: #000000" id="video-unsupported-reason">Reason:
-            <span class="title"></span>
           </p>
           <p class="title" style="color: #000000">Quality:
             <span class="title" id="video-mos"></span>
@@ -115,7 +113,9 @@
     <hr style="margin-bottom:30px">
     <div id="hardware-setup">
     </div>
-    <div id="recorder_container" class="d-flex flex-column">
+    <hr style="margin-bottom:30px">
+    <p>Record your voice and play it back to check the sound quality and how others will hear you</p>
+    <div id="recorder_container" class="d-flex flex-column align-items-center">
       <div class="d-flex pb-5">
         <button id="recordButton" class="mr-4">Record</button>
         <button id="stopButton" disabled>Stop</button>
@@ -178,14 +178,17 @@
     <div class="empty"></div>
   </div>
 
+</div>
+<div id="btn-container" class="justify-content-center align-items-center" style="display: none">
+  <div class="page-subtitle">
+    Test Complete
+  </div>
+  <hr style="margin-bottom:30px">
+  <div class="d-flex justify-content-center align-items-center pb-5">
+    <button id="rerunTest" class="mr-4">Re-run test</button>
+    <button id="email">Email results</button>
 
-  <!--        <div class="row">-->
-  <!--          <div class="col-md-6 col-md-offset-3">-->
-  <!--            <h1>Audio Recording Test</h1>-->
-  <!--            <p class="title" style=color: #000000">Talk for 10 seconds, then you will hear your recording played back</p>-->
-  <!--            <button id="action" type="button">Start recording...</button>-->
-  <!--          </div>-->
-  <!--        </div>-->
+  </div>
 </div>
 
 </div>
