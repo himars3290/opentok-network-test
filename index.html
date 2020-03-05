@@ -2,6 +2,7 @@
 <html>
 <head>
   <script type="text/javascript" src="assets/js/opentok.min.js"></script>
+  <script type="text/javascript" src="assets/js/html2canvas.min.js"></script>
   <script type="text/javascript" src="assets/js/jquery-3.4.1.min.js"></script>
   <link rel="stylesheet" href="assets/materialize.min.css">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -39,145 +40,148 @@
     </div>
   </div>
 </div>
-<div class="d-none results-container justify-content-center align-items-center flex-column">
-  <div id="connectivity_status_container" class="d-flex flex-column justify-content-center align-items-center">
-    <div class="page-subtitle">
-      Testing Camera and Microphone Connection
-    </div>
-    <hr style="margin-bottom:30px">
-    <p class="title">Test in progress.</p>
-    <img src="assets/spinner.gif">
-  </div>
-  <div id="quality_status_container" class="d-flex flex-column">
-    <div id="quality_header" class="d-flex flex-column justify-content-center align-items-center">
-      <div class="page-subtitle">Testing quality</div>
+<button id="screenshot-button" class="d-none">screenshot</button>
+<div class="screenshot">
+  <div class="d-none results-container justify-content-center align-items-center flex-column">
+    <div id="connectivity_status_container" class="d-flex flex-column justify-content-center align-items-center">
+      <div class="page-subtitle">
+        Testing Camera and Microphone Connection
+      </div>
       <hr style="margin-bottom:30px">
       <p class="title">Test in progress.</p>
       <img src="assets/spinner.gif">
     </div>
-    <div class="d-flex" style="justify-content: space-evenly">
-      <div class="audio" id="audio">
-        <div class="page-subtitle" style="font-size: 30px; padding: 0">Audio</div>
+    <div id="quality_status_container" class="d-flex flex-column">
+      <div id="quality_header" class="d-flex flex-column justify-content-center align-items-center">
+        <div class="page-subtitle">Testing quality</div>
         <hr style="margin-bottom:30px">
+        <p class="title">Test in progress.</p>
+        <img src="assets/spinner.gif">
+      </div>
+      <div class="d-flex" style="justify-content: space-evenly">
+        <div class="audio" id="audio">
+          <div class="page-subtitle" style="font-size: 30px; padding: 0">Audio</div>
+          <hr style="margin-bottom:30px">
 
-        <div>
+          <div>
+            <div class="results">
+              <p class="title" style="color: #000000">Supported:
+                <span class="title" id="audio-supported"></span>
+              </p>
+              <p class="title" style="color: #000000">Quality:
+                <span class="title" id="audio-mos"></span>
+              </p>
+              <p class="title" style="color: #000000">Bitrate:
+                <span class="title" id="audio-bitrate"></span>
+              </p>
+              <p class="title" style="color: #000000">Packet loss ratio:
+                <span class="title" id="audio-plr"></span>
+              </p>
+            </div>
+            <div id="audioGraph" class="graph"></div>
+          </div>
+        </div>
+        <div class="video" id="video">
+          <div class="page-subtitle" style="font-size: 30px; padding: 0">Video</div>
+          <hr style="margin-bottom:30px">
+
           <div class="results">
             <p class="title" style="color: #000000">Supported:
-              <span class="title" id="audio-supported"></span>
+              <span class="title" id="video-supported"></span>
             </p>
             <p class="title" style="color: #000000">Quality:
-              <span class="title" id="audio-mos"></span>
+              <span class="title" id="video-mos"></span>
             </p>
             <p class="title" style="color: #000000">Bitrate:
-              <span class="title" id="audio-bitrate"></span>
+              <span class="title" id="video-bitrate"></span>
             </p>
             <p class="title" style="color: #000000">Packet loss ratio:
-              <span class="title" id="audio-plr"></span>
+              <span class="title" id="video-plr"></span>
+            </p>
+            <p class="title" style="color: #000000">Recommended resolution:
+              <span class="title" id="video-recommendedResolution"></span>
+            </p>
+            <p class="title" style="color: #000000">Recommended frame rate:
+              <span class="title" id="video-recommendedFrameRate"></span>
             </p>
           </div>
-          <div id="audioGraph" class="graph"></div>
+          <div id="videoGraph" class="graph"></div>
         </div>
       </div>
-      <div class="video" id="video">
-        <div class="page-subtitle" style="font-size: 30px; padding: 0">Video</div>
-        <hr style="margin-bottom:30px">
-
-        <div class="results">
-          <p class="title" style="color: #000000">Supported:
-            <span class="title" id="video-supported"></span>
-          </p>
-          <p class="title" style="color: #000000">Quality:
-            <span class="title" id="video-mos"></span>
-          </p>
-          <p class="title" style="color: #000000">Bitrate:
-            <span class="title" id="video-bitrate"></span>
-          </p>
-          <p class="title" style="color: #000000">Packet loss ratio:
-            <span class="title" id="video-plr"></span>
-          </p>
-          <p class="title" style="color: #000000">Recommended resolution:
-            <span class="title" id="video-recommendedResolution"></span>
-          </p>
-          <p class="title" style="color: #000000">Recommended frame rate:
-            <span class="title" id="video-recommendedFrameRate"></span>
-          </p>
+    </div>
+    <div id="hardware_setup_container" class="d-none flex-column justify-content-center align-items-center">
+      <div class="page-subtitle">
+        Audio / Video Settings
+      </div>
+      <hr style="margin-bottom:30px">
+      <div id="hardware-setup">
+      </div>
+      <hr style="margin-bottom:30px">
+      <p>Record your voice and play it back to check the sound quality and how others will hear you</p>
+      <div id="recorder_container" class="d-flex flex-column align-items-center">
+        <div class="d-flex pb-5">
+          <button id="recordButton" class="mr-4">Record</button>
+          <button id="stopButton" disabled>Stop</button>
         </div>
-        <div id="videoGraph" class="graph"></div>
       </div>
     </div>
   </div>
-  <div id="hardware_setup_container" class="d-none flex-column justify-content-center align-items-center">
+  <div id="connectivity_tests" class="connectivity_tests" style="display: none">
     <div class="page-subtitle">
-      Audio / Video Settings
+      Connectivity to KUDO Servers
     </div>
     <hr style="margin-bottom:30px">
-    <div id="hardware-setup">
-    </div>
-    <hr style="margin-bottom:30px">
-    <p>Record your voice and play it back to check the sound quality and how others will hear you</p>
-    <div id="recorder_container" class="d-flex flex-column align-items-center">
-      <div class="d-flex pb-5">
-        <button id="recordButton" class="mr-4">Record</button>
-        <button id="stopButton" disabled>Stop</button>
-      </div>
-    </div>
-  </div>
-</div>
-<div id="connectivity_tests" class="connectivity_tests" style="display: none">
-  <div class="page-subtitle">
-    Connectivity to KUDO Servers
-  </div>
-  <hr style="margin-bottom:30px">
-  <div class="connectivity-grid">
-    <div class="empty"></div>
-    <div class="precall_panel api_status_light d-flex" id="api_server_test">
-      <div class="connectivity_test_status connectivity_test_success" id="api_server_status">
-        <img id="api_img" src="https://tokbox.com/developer/tools/precall/images/server-on.png">
-        <div>API Server</div>
-      </div>
-      <div class="section_details">
-        <div id="api_section_name" class="section_name section_name_success">KUDO API server - Connected</div>
-        <div class="subtext">Connects to KUDO and used for session initialization and
-          signaling.
+    <div class="connectivity-grid">
+      <div class="empty"></div>
+      <div class="precall_panel api_status_light d-flex" id="api_server_test">
+        <div class="connectivity_test_status connectivity_test_success" id="api_server_status">
+          <img id="api_img" src="https://tokbox.com/developer/tools/precall/images/server-on.png">
+          <div>API Server</div>
         </div>
-        <div id="api_results">Successfully connected to the KUDO API server.</div>
-      </div>
-    </div>
-    <div class="empty"></div>
-
-    <div class="empty"></div>
-    <div class="precall_panel api_status_light d-flex" id="messaging_socket_test">
-      <div class="connectivity_test_status connectivity_test_success" id="messaging_server_status">
-        <img id="messaging_img" src="https://tokbox.com/developer/tools/precall/images/server-on.png">
-        <div>Messaging WebSocket</div>
-      </div>
-      <div class="section_details">
-        <div id="messaging_section_name" class="section_name section_name_success">KUDO Messaging WebSocket -
-          Connected
+        <div class="section_details">
+          <div id="api_section_name" class="section_name section_name_success">KUDO API server - Connected</div>
+          <div class="subtext">Connects to KUDO and used for session initialization and
+            signaling.
+          </div>
+          <div id="api_results">Successfully connected to the KUDO API server.</div>
         </div>
-        <div class="subtext">Clients send and receive KUDO session-related messages using this WebSocket.</div>
-        <div id="messaging_results">Successfully connected to the KUDO Messaging WebSocket.</div>
       </div>
-    </div>
-    <div class="empty"></div>
+      <div class="empty"></div>
 
-    <div class="empty"></div>
-    <div class="precall_panel api_status_light d-flex" id="media_server_test">
-      <div class="connectivity_test_status connectivity_test_success" id="media_server_status">
-        <img id="media_img" src="https://tokbox.com/developer/tools/precall/images/server-on.png">
-        <div>Media Server</div>
-      </div>
-      <div class="section_details">
-        <div id="media_section_name" class="section_name section_name_success">KUDO Media Server - Connected</div>
-        <div class="subtext">Clients send audio and video to our media server for intelligent
-          and efficient routing to their destination.
+      <div class="empty"></div>
+      <div class="precall_panel api_status_light d-flex" id="messaging_socket_test">
+        <div class="connectivity_test_status connectivity_test_success" id="messaging_server_status">
+          <img id="messaging_img" src="https://tokbox.com/developer/tools/precall/images/server-on.png">
+          <div>Messaging WebSocket</div>
         </div>
-        <div id="media_results">Successfully connected to the KUDO Media Server.</div>
+        <div class="section_details">
+          <div id="messaging_section_name" class="section_name section_name_success">KUDO Messaging WebSocket -
+            Connected
+          </div>
+          <div class="subtext">Clients send and receive KUDO session-related messages using this WebSocket.</div>
+          <div id="messaging_results">Successfully connected to the KUDO Messaging WebSocket.</div>
+        </div>
       </div>
+      <div class="empty"></div>
+
+      <div class="empty"></div>
+      <div class="precall_panel api_status_light d-flex" id="media_server_test">
+        <div class="connectivity_test_status connectivity_test_success" id="media_server_status">
+          <img id="media_img" src="https://tokbox.com/developer/tools/precall/images/server-on.png">
+          <div>Media Server</div>
+        </div>
+        <div class="section_details">
+          <div id="media_section_name" class="section_name section_name_success">KUDO Media Server - Connected</div>
+          <div class="subtext">Clients send audio and video to our media server for intelligent
+            and efficient routing to their destination.
+          </div>
+          <div id="media_results">Successfully connected to the KUDO Media Server.</div>
+        </div>
+      </div>
+      <div class="empty"></div>
     </div>
-    <div class="empty"></div>
+
   </div>
-
 </div>
 <div id="btn-container" class="justify-content-center align-items-center" style="display: none">
   <div class="page-subtitle">
@@ -186,7 +190,8 @@
   <hr style="margin-bottom:30px">
   <div class="d-flex justify-content-center align-items-center pb-5">
     <button id="rerunTest" class="mr-4">Re-run test</button>
-    <button id="email">Email results</button>
+    <button id="screenshot" class="mr-4">Take Screenshot</button>
+    <button id="email">Compose Email</button>
 
   </div>
 </div>

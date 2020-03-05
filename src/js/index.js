@@ -10,6 +10,21 @@ let otNetworkTest;
 let audioOnly;
 
 const precallDiv = document.getElementById('precall');
+const screenshotBtn = document.querySelector("#screenshot-button");
+const screenshot = document.querySelector("#screenshot");
+screenshotBtn.onclick = function(){
+  html2canvas(document.querySelector(".screenshot")).then(canvas => {
+    let dataUrl = canvas.toDataURL('image/png');
+    var hrefElement = document.createElement('a');
+    hrefElement.href = dataUrl;
+    document.body.append(hrefElement);
+    hrefElement.download = `Screenshot.png`;
+    hrefElement.click();
+    hrefElement.remove();
+  });
+
+}
+
 precallDiv.querySelector('#precall button').addEventListener('click', function () {
   $(".results-container").removeClass('d-none').addClass('d-flex');
   $(".start-test-container").addClass('d-none').removeClass('d-flex');
@@ -17,10 +32,30 @@ precallDiv.querySelector('#precall button').addEventListener('click', function (
 })
 
 $("#rerunTest").click(function () {
-  // location.reload();
-  window.open('mailto:test@example.com?subject=subject&body=body');
+  location.reload();
 
 });
+
+screenshot.onclick = function(){
+  window.scrollTo(0,0);
+  html2canvas(document.querySelector(".screenshot")).then(canvas => {
+    let dataUrl = canvas.toDataURL('image/png');
+    var hrefElement = document.createElement('a');
+    hrefElement.href = dataUrl;
+    document.body.append(hrefElement);
+    hrefElement.download = `Screenshot.png`;
+    hrefElement.click();
+    hrefElement.remove();
+  });
+}
+$("#email").click(function () {
+  var emailTo = "info@kudoway.com";
+  var emailCC = "";
+  var emailSub = "KUDO Network Test";
+  var emailBody = "";
+  window.open("mailto:"+emailTo+'?cc='+emailCC+'&subject='+emailSub+'&body='+emailBody,'_blank');
+})
+
 
 
 
